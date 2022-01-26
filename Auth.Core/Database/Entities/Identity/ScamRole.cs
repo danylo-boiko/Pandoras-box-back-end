@@ -4,5 +4,6 @@
 
     public class ScamRole : IdentityRole<int>
     {
+        public virtual ICollection<ScamUserRole> UserRoles { get; set; }
     }
 }

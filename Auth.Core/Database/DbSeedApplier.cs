@@ -7,8 +7,7 @@
         public static void ApplySeed(this ModelBuilder builder)
         {
             builder
-                .SeedRoles()
-                .SeedUsers();
+                .SeedRoles();
         }
     }
 }

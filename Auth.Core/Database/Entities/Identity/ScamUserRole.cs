@@ -4,8 +4,8 @@
 
     public class ScamUserRole : IdentityUserRole<int>
     {
-        public ScamUser User { get; set; } = null!;
+        public virtual ScamUser User { get; set; }
 
-        public ScamRole Role { get; set; } = null!;
+        public virtual ScamRole Role { get; set; }
     }
 }

@@ -24,8 +24,8 @@
             base.OnModelCreating(builder);
 
             builder
-                .ApplyIdentityConfiguration()
                 .ApplyEntityTypesConfigurations()
+                .ApplyIdentityConfiguration()
                 .ApplySeed();
         }
     }

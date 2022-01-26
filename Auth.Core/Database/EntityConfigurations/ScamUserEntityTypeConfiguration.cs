@@ -10,6 +10,8 @@
         {
             builder.HasMany(e => e.UserRoles)
                 .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

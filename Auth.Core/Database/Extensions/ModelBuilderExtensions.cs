@@ -9,6 +9,7 @@
         public static ModelBuilder ApplyEntityTypesConfigurations(this ModelBuilder builder)
         {
             builder.ApplyConfiguration(new ScamUserEntityTypeConfiguration());
+            builder.ApplyConfiguration(new ScamUserRoleEntityTypeConfiguration());
 
             return builder;
         }
