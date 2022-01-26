@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Commands\SendTwoFactorDigitCode\" />
     <Folder Include="CQRS\Commands\SignUp\" />
     <Folder Include="CQRS\Commands\SignIn\" />
     <Folder Include="CQRS\Queries\" />

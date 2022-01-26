@@ -1,8 +1,11 @@
 ﻿namespace Auth.API.Extensions
 {
+    using Core;
     using Core.Configurations;
     using Core.Database;
     using Core.Database.Entities.Identity;
+    using Core.Services;
+    using Core.Services.Interfaces;
     using MediatR;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Identity;
@@ -59,7 +62,14 @@
 
         public static IServiceCollection AddMediatr(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddMediatR(typeof(Program).Assembly);
+            serviceCollection.AddMediatR(typeof(MediatREntryPoint).Assembly);
+            return serviceCollection;
+        }
+
+        public static IServiceCollection AddCustomServices(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddScoped<IEmailService, EmailService>();
+
             return serviceCollection;
         }
     }
