@@ -1,7 +1,6 @@
-﻿namespace Auth.Core.Services
+﻿namespace Auth.Core.Services.Email
 {
     using Configurations;
-    using Interfaces;
     using MailKit.Net.Smtp;
     using Microsoft.Extensions.Options;
     using MimeKit;

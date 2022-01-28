@@ -1,4 +1,4 @@
-﻿namespace Auth.Core.Services
+﻿namespace Auth.Core.Services.TwoFactorDigitCodeProvider
 {
     using Database.Entities.Identity;
     using Microsoft.AspNetCore.Identity;

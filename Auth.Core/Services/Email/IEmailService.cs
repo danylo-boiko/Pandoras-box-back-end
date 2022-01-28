@@ -1,7 +1,5 @@
-﻿namespace Auth.Core.Services.Interfaces
+﻿namespace Auth.Core.Services.Email
 {
-    using MimeKit;
-
     public interface IEmailService
     {
         public Task SendMimeMessageAsync(string receiverEmail, string subject, string textBody);

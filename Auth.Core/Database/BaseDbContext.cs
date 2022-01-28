@@ -26,7 +26,16 @@
             builder
                 .ApplyEntityTypesConfigurations()
                 .ApplyIdentityConfiguration()
+                .ApplyValueConversions()
                 .ApplySeed();
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            base.ConfigureConventions(configurationBuilder);
+
+            configurationBuilder.Properties<string>()
+                .HaveMaxLength(250);
         }
     }
 }
