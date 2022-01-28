@@ -4,8 +4,8 @@
     using Core.Configurations;
     using Core.Database;
     using Core.Database.Entities.Identity;
-    using Core.Services;
-    using Core.Services.Interfaces;
+    using Core.Services.Email;
+    using Core.Services.User;
     using MediatR;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Identity;
@@ -69,6 +69,7 @@
         public static IServiceCollection AddCustomServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IEmailService, EmailService>();
+            serviceCollection.AddScoped<IUserService, UserService>();
 
             return serviceCollection;
         }

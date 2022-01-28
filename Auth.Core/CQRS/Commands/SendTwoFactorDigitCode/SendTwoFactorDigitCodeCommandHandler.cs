@@ -2,14 +2,14 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Common;
 using Database;
 using Database.Entities.Identity;
 using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Services;
-using Services.Interfaces;
+using Services.Email;
+using Services.TwoFactorDigitCodeProvider;
 
 /// <summary>
 /// SendTwoFactorDigitCode handler.
@@ -17,7 +17,6 @@ using Services.Interfaces;
 /// <seealso cref="MediatR.IRequestHandler{SendTwoFactorDigitCode}" />
 public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFactorDigitCodeCommand, ExecutionResult>
 {
-    private readonly ILogger<SendTwoFactorDigitCodeCommandHandler> _logger;
     private readonly BaseDbContext _dbContext;
     private readonly UserManager<ScamUser> _userManager;
     private readonly IEmailService _emailService;
@@ -25,15 +24,11 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
     /// <summary>
     /// Initializes a new instance of the <see cref="SendTwoFactorDigitCodeCommandHandler" /> class.
     /// </summary>
-    /// <param name="logger">The logger.</param>
     /// <param name="dbContext">The database context.</param>
-    public SendTwoFactorDigitCodeCommandHandler(
-        ILogger<SendTwoFactorDigitCodeCommandHandler> logger,
-        BaseDbContext dbContext,
+    public SendTwoFactorDigitCodeCommandHandler(BaseDbContext dbContext,
         UserManager<ScamUser> userManager, 
         IEmailService emailService)
     {
-        _logger = logger;
         _dbContext = dbContext;
         _userManager = userManager;
         _emailService = emailService;
@@ -48,46 +43,64 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
     public async Task<ExecutionResult> Handle(SendTwoFactorDigitCodeCommand request,
         CancellationToken cancellationToken)
     {
-        try
+        var totp = new TwoFactorDigitCodeProvider();
+
+        using (var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken))
         {
-            var totp = new TwoFactorDigitCodeProvider();
-
-            var newUser = new ScamUser
+            try
             {
-                Email = request.Email,
-                UserName = request.Email
-            };
+                var newUser = new ScamUser
+                {
+                    Email = request.Email,
+                    UserName = request.Email
+                };
 
-            if (await _userManager.FindByEmailAsync(newUser.Email) is not null)
-            {
-                return new ExecutionResult(new ErrorInfo("Access denied."));
+                if (await _userManager.FindByEmailAsync(newUser.Email) is not null)
+                {
+                    return new ExecutionResult(new ErrorInfo("Access denied."));
+                }
+
+                var userCreationResult = await _userManager.CreateAsync(newUser);
+                if (!userCreationResult.Succeeded)
+                {
+                    var errorsInfo = userCreationResult
+                        .Errors
+                        .Select(identityError => new ErrorInfo(identityError.Code, identityError.Description))
+                        .ToList();
+
+                    return new ExecutionResult(errorsInfo);
+                }
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                var code = await totp.GenerateAsync("sign-up", _userManager, newUser);
+
+                if (code is null)
+                {
+                    return new ExecutionResult(new ErrorInfo("Could not generate two factor digit code."));
+                }
+
+                newUser.UserRoles = new List<ScamUserRole> 
+                { 
+                    new() {
+                        UserId = newUser.Id, 
+                        RoleId = AppConsts.UserRoles.NewUser
+                    }
+                };
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                await _emailService.SendMimeMessageAsync(newUser.Email, "E-mail verification code", code);
+
+                await transaction.CommitAsync(cancellationToken);
+
+                return new ExecutionResult(new InfoMessage("Confirmation code has been sent successfully."));
             }
-
-            var userCreationResult = await _userManager.CreateAsync(newUser);
-            if (!userCreationResult.Succeeded)
+            catch (Exception e)
             {
-                var errorsInfo = userCreationResult
-                    .Errors
-                    .Select(identityError => new ErrorInfo(identityError.Code, identityError.Description))
-                    .ToList();
-
-                return new ExecutionResult(errorsInfo);
+                await transaction.RollbackAsync(cancellationToken);
+                return new ExecutionResult(new ErrorInfo("Error while sending 6-digit code to e-mail.", e.Message));
             }
-
-            var code = await totp.GenerateAsync("sign-up", _userManager, newUser);
-
-            if (code is null)
-            {
-                return new ExecutionResult(new ErrorInfo("Could not generate two factor digit code."));
-            }
-
-            await _emailService.SendMimeMessageAsync(newUser.Email, "E-mail verification code", code);
-
-            return new ExecutionResult(new InfoMessage("Code has been sent successfully."));
-        }
-        catch (Exception e)
-        {
-            return new ExecutionResult(new ErrorInfo("Error while sending code.", e.Message));
         }
     }
 }

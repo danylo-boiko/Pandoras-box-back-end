@@ -16,9 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="CQRS\Commands\SignOut\" />
     <Folder Include="CQRS\Commands\SignUp\" />
     <Folder Include="CQRS\Commands\SignIn\" />
     <Folder Include="CQRS\Queries\" />
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

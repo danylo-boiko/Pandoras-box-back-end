@@ -1,6 +1,5 @@
 ﻿namespace Auth.API.Validators
 {
-    using System.Data;
     using Core.CQRS.Commands.SignUp;
     using FluentValidation;
 
@@ -20,7 +19,12 @@
                 .Must(e => e.Length == 6);
 
             RuleFor(e => e.BirthDate)
-                .Must(e => e.Year - DateTime.UtcNow.Year == 14);
+                .Must(e => DateTime.UtcNow.Year - e.Year > 13)
+                .WithMessage("You must be at least 14 years old.");
+
+            RuleFor(e => e.DisplayName)
+                .Matches("^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$")
+                .WithMessage("Display name can contain letters, numbers, underscores or dots and be from 4 to 20 characters long.");
         }
     }
 }

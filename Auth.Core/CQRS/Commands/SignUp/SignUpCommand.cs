@@ -1,5 +1,6 @@
 ﻿namespace Auth.Core.CQRS.Commands.SignUp;
 
+using System.ComponentModel.DataAnnotations;
 using LS.Helpers.Hosting.API;
 using MediatR;
 
@@ -9,11 +10,16 @@ using MediatR;
 /// <inheritdoc />
 public sealed class SignUpCommand : IRequest<ExecutionResult>
 {
-    public DateOnly BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
 
     public string Email { get; set; }
 
     public string Password { get; set; }
 
+    [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
+    public string RepeatPassword { get; set; }
+
     public string EmailCode { get; set; }
+
+    public string DisplayName { get; set; }
 }

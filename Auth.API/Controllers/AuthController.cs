@@ -1,6 +1,8 @@
 namespace Auth.API.Controllers
 {
     using Core.CQRS.Commands.SendTwoFactorDigitCode;
+    using Core.CQRS.Commands.SignIn;
+    using Core.CQRS.Commands.SignOut;
     using Core.CQRS.Commands.SignUp;
     using LS.Helpers.Hosting.Extensions;
     using MediatR;
@@ -18,7 +20,7 @@ namespace Auth.API.Controllers
         }
 
         [HttpPost("email-confirmation-code")]
-        public async Task<IActionResult> SignUp([FromBody] SendTwoFactorDigitCodeCommand command)
+        public async Task<IActionResult> SendEmailConfirmationCode([FromBody] SendTwoFactorDigitCodeCommand command)
         {
             var result = await _mediator.Send(command);
 
@@ -29,6 +31,22 @@ namespace Auth.API.Controllers
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
         {
             var result = await  _mediator.Send(command);
+
+            return this.FromExecutionResult(result);
+        }
+
+        [HttpPost("sign-in")]
+        public async Task<IActionResult> SignIn([FromBody] SignInCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return this.FromExecutionResult(result);
+        }
+
+        [HttpPost("sign-out")]
+        public async Task<IActionResult> SignOut([FromBody] SignOutCommand command)
+        {
+            var result = await _mediator.Send(command);
 
             return this.FromExecutionResult(result);
         }

@@ -1,10 +1,10 @@
 ﻿namespace Auth.Core.Models.Auth
 {
-    public class SignedInUserDTO
+    public class SignedInUserDto
     {
         public int Id { get; set; }
 
-        public string? Username { get; set; }
+        public string? DisplayName { get; set; }
 
         public List<string> Roles { get; set; }
 
