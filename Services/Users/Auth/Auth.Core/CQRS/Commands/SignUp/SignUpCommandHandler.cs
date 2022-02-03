@@ -2,13 +2,13 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using Common;
-using Database;
-using Database.Entities.Identity;
 using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Users.Common;
 using Microsoft.EntityFrameworkCore;
+using Users.Core.Database;
+using Users.Core.Database.Entities.Identity;
 using Models.Auth;
 using NodaTime;
 using Services.Email;

@@ -1,4 +1,4 @@
-﻿namespace Auth.Core.Database
+﻿namespace Users.Core.Database
 {
     using Common;
     using Entities.Identity;

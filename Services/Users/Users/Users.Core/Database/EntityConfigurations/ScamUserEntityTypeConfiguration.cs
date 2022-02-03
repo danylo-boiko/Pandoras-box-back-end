@@ -1,4 +1,4 @@
-﻿namespace Auth.Core.Database.EntityConfigurations
+﻿namespace Users.Core.Database.EntityConfigurations
 {
     using Entities.Identity;
     using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿namespace Auth.Core.Database.Entities.Identity
+﻿namespace Users.Core.Database.Entities.Identity
 {
     using Microsoft.AspNetCore.Identity;
     using NodaTime;

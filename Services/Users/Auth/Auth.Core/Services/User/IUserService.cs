@@ -1,7 +1,7 @@
 ﻿namespace Auth.Core.Services.User
 {
-    using Database.Entities.Identity;
-
+    using Users.Core.Database.Entities.Identity;
+    
     public interface IUserService
     {
         int UserId { get; }

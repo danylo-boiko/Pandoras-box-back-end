@@ -1,4 +1,4 @@
-﻿namespace Auth.Core.Database
+﻿namespace Users.Core.Database
 {
     using Microsoft.EntityFrameworkCore;
 
@@ -6,8 +6,7 @@
     {
         public static void ApplySeed(this ModelBuilder builder)
         {
-            builder
-                .SeedRoles();
+            builder.SeedRoles();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Auth.Core.Database.Extensions
+﻿namespace Users.Core.Database.Extensions
 {
     using System.Data;
     using Entities.Identity;

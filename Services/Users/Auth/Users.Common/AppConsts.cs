@@ -1,4 +1,4 @@
-﻿namespace Auth.Common
+﻿namespace Users.Common
 {
     public static class AppConsts
     {

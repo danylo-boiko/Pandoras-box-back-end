@@ -1,10 +1,10 @@
 ﻿namespace Auth.Core.Services.User
 {
     using System.Security.Claims;
-    using Database;
-    using Database.Entities.Identity;
+    using Users.Core.Database.Entities.Identity;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
+    using Users.Core.Database;
 
     public class UserService : IUserService
     {
@@ -30,7 +30,6 @@
         
         public async Task<ScamUser?> GetCurrentUserAsync()
         {
-            var userId = UserId;
             var user = await _dbContext
                 .Users
                 .SingleOrDefaultAsync(e => e.Id == UserId);

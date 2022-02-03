@@ -2,13 +2,13 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using Common;
-using Database;
-using Database.Entities.Identity;
 using LS.Helpers.Hosting.API;
+using Users.Core.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Services.Email;
+using Users.Common;
+using Users.Core.Database.Entities.Identity;
 using Services.TwoFactorDigitCodeProvider;
 
 /// <summary>

@@ -2,8 +2,8 @@
 {
     using Core;
     using Core.Configurations;
-    using Core.Database;
-    using Core.Database.Entities.Identity;
+    using Users.Core.Database;
+    using Users.Core.Database.Entities.Identity;
     using Core.Services.Email;
     using Core.Services.User;
     using MediatR;
@@ -53,8 +53,7 @@
             return serviceCollection;
         }
 
-        public static IServiceCollection AddConfigurations(this IServiceCollection serviceCollection,
-            IConfiguration configuration)
+        public static IServiceCollection AddConfigurations(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection.Configure<GoogleSmtpCredentials>(configuration.GetSection(nameof(GoogleSmtpCredentials)));
             return serviceCollection;

@@ -1,13 +1,12 @@
-﻿using Auth.Core.Database;
-using MediatR;
-
-namespace Auth.Core.CQRS.Commands.SignIn;
-
+﻿using MediatR;
+using Users.Core.Database;
+using Users.Core.Database.Entities.Identity;
 using Auth.Core.Models.Auth;
-using Database.Entities.Identity;
 using LS.Helpers.Hosting.API;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+namespace Auth.Core.CQRS.Commands.SignIn;
 
 /// <summary>
 /// SignInCommand handler.
