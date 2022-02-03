@@ -1,5 +1,6 @@
 using Auth.API.Extensions;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Description = "API for user authentication",
+        Contact = new OpenApiContact
+        {
+            Email = "kostyabek@gmail.com",
+            Name = "Kostiantyn Biektin"
+        },
+        Title = "TaskMan Authentication API",
+        Version = "1.0.0",
+    });
+});
 
 builder.Services
     .AddCookieAuthentication()
@@ -25,7 +39,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(o =>
+    {
+        o.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        o.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
