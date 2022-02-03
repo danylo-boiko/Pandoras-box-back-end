@@ -19,7 +19,12 @@ namespace Auth.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("email-confirmation-code")]
+        /// <summary>
+        /// Send e-mail confirmation code to the given address.
+        /// </summary>
+        /// <param name="command">E-mail address data.</param>
+        /// <returns></returns>
+        [HttpPost("e-mail-confirmation-code")]
         public async Task<IActionResult> SendEmailConfirmationCode([FromBody] SendTwoFactorDigitCodeCommand command)
         {
             var result = await _mediator.Send(command);
@@ -27,6 +32,11 @@ namespace Auth.API.Controllers
             return this.FromExecutionResult(result);
         }
 
+        /// <summary>
+        /// Sign up a new user.
+        /// </summary>
+        /// <param name="command">New user data.</param>
+        /// <returns></returns>
         [HttpPost("sign-up")]
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
         {
@@ -35,6 +45,11 @@ namespace Auth.API.Controllers
             return this.FromExecutionResult(result);
         }
 
+        /// <summary>
+        /// Log in as an existing user.
+        /// </summary>
+        /// <param name="command">Log in credentials.</param>
+        /// <returns></returns>
         [HttpPost("log-in")]
         public async Task<IActionResult> LogIn([FromBody] SignInCommand command)
         {
@@ -43,6 +58,10 @@ namespace Auth.API.Controllers
             return this.FromExecutionResult(result);
         }
 
+        /// <summary>
+        /// Log out from an account.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("log-out")]
         public async Task<IActionResult> LogOut()
         {

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Auth.API.Extensions;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
@@ -22,6 +23,9 @@ builder.Services.AddSwaggerGen(o =>
         Title = "TaskMan Authentication API",
         Version = "1.0.0",
     });
+
+    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
 });
 
 builder.Services
