@@ -35,17 +35,18 @@ namespace Auth.API.Controllers
             return this.FromExecutionResult(result);
         }
 
-        [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn([FromBody] SignInCommand command)
+        [HttpPost("log-in")]
+        public async Task<IActionResult> LogIn([FromBody] SignInCommand command)
         {
             var result = await _mediator.Send(command);
 
             return this.FromExecutionResult(result);
         }
 
-        [HttpPost("sign-out")]
-        public async Task<IActionResult> SignOut([FromBody] SignOutCommand command)
+        [HttpPost("log-out")]
+        public async Task<IActionResult> LogOut()
         {
+            var command = new SignOutCommand();
             var result = await _mediator.Send(command);
 
             return this.FromExecutionResult(result);
