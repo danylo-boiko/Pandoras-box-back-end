@@ -1,6 +1,7 @@
-﻿namespace Users.Core.Database
+﻿using Users.Common;
+
+namespace Users.Core.Database
 {
-    using Common;
     using Entities.Identity;
     using Microsoft.EntityFrameworkCore;
 

@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Users\Users.Common\Users.Common.csproj" />
     <ProjectReference Include="..\..\Users\Users.Core\Users.Core.csproj" />
-    <ProjectReference Include="..\Users.Common\Users.Common.csproj" />
   </ItemGroup>
 
 </Project>
