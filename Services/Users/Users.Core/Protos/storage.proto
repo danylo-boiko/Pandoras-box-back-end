@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Users.Core";
+
+package storage;
+
+service Storage {
+	rpc SaveMediaFiles(stream SaveMediaFilesRequest) returns (SaveMediaFilesResponse);
+}
+
+message SaveMediaFilesRequest {
+	bytes fileBytes = 1;
+	int32 categoryId = 2;
+	string extension = 3;
+}
+
+message SaveMediaFilesResponse {
+	bool isSuccess = 1;
+	string message = 2;
+}
