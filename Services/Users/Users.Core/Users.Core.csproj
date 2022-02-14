@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CQRS\Queries\**" />
+    <EmbeddedResource Remove="CQRS\Queries\**" />
+    <None Remove="CQRS\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\storage.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.42.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.43.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="LS.Helpers.Hosting" Version="5.0.3" />
+    <PackageReference Include="MailKit" Version="3.1.1" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+  </ItemGroup>
+	
+	<ItemGroup>
+	    <Folder Include="CQRS\Commands\Auth\SignOut\" />
+	    <Folder Include="CQRS\Commands\Auth\SignUp\" />
+	    <Folder Include="CQRS\Commands\Auth\SignIn\" />
+	    <Folder Include="CQRS\Commands\Profile\SetAvatar\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Protobuf Include="Protos\storage.proto">
+	    <GrpcServices>Client</GrpcServices>
+	  </Protobuf>
+	</ItemGroup>
+
+</Project>
