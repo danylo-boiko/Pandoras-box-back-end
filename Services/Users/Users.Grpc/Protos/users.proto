@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "Users.Grpc";
+
+import "google/protobuf/wrappers.proto";
+
+service UsersProtoService {
+  rpc GetUserAsync(GetUserRequest) returns (UserModel);
+}
+
+message UserModel {
+  int32 id = 1;
+  google.protobuf.StringValue avatarUrl = 2;
+  google.protobuf.StringValue bio = 3;
+  string userName = 4;
+  string email = 5;
+}
+
+message GetUserRequest {
+  int32 id = 1;
+}
