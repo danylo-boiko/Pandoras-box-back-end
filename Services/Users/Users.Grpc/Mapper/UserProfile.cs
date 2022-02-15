@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Users.Core.Database.Entities.Identity;
+using Users.Grpc.Protos;
 
 namespace Users.Grpc.Mapper;
 

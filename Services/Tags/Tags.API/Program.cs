@@ -11,7 +11,8 @@ builder.Services
     .AddDataAccess(builder.Configuration)
     .AddRepositories()
     .AddMediatr()
-    .AddAutoMapper();
+    .AddAutoMapper()
+    .AddGrpc(builder.Configuration["GrpcSettings:UsersUrl"]);
 
 var app = builder.Build();
 

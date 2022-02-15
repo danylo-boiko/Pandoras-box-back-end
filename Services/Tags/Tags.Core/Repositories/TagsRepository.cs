@@ -19,6 +19,11 @@ public class TagsRepository : ITagsRepository
         return await _context.Tags.FirstOrDefaultAsync(t => t.Id.Equals(id));
     }
 
+    public async Task<Tag?> GetAsync(string tagContent)
+    {
+        return await _context.Tags.FirstOrDefaultAsync(t=>t.Content.Equals(tagContent));
+    }
+
     public async Task<bool> CreateAsync(Tag tag)
     {
         await _context.Tags.AddAsync(tag);
@@ -28,7 +33,7 @@ public class TagsRepository : ITagsRepository
     public async Task<bool> UpdateAsync(Tag tag)
     {
         var existTag = await _context.Tags.FindAsync(tag.Id);
-        _context.Entry(existTag).CurrentValues.SetValues(tag);
+        existTag.Content = tag.Content;
         return await _context.SaveChangesAsync() > 0;
     }
 

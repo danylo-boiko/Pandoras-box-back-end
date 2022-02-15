@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Grpc.Core;
 using Users.Core.Repositories.Interfaces;
+using Users.Grpc.Protos;
 
 namespace Users.Grpc.Services;
 
@@ -15,7 +16,7 @@ public class UsersService : UsersProtoService.UsersProtoServiceBase
         _mapper = mapper;
     }
     
-    public override async Task<UserModel> GetUserAsync(GetUserRequest request, ServerCallContext context)
+    public override async Task<UserModel> GetUser(GetUserRequest request, ServerCallContext context)
     {
         var user = await _usersRepository.GetAsync(request.Id);
         

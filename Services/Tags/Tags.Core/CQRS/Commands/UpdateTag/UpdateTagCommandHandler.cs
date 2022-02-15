@@ -10,7 +10,7 @@ public class UpdateTagCommandHandler : IRequestHandler<UpdateTagCommand, Executi
 {
     private readonly ITagsRepository _tagsRepository;
     private readonly IMapper _mapper;
-
+    
     public UpdateTagCommandHandler(ITagsRepository tagsRepository, IMapper mapper)
     {
         _tagsRepository = tagsRepository ?? throw new ArgumentNullException(nameof(tagsRepository));
@@ -21,12 +21,22 @@ public class UpdateTagCommandHandler : IRequestHandler<UpdateTagCommand, Executi
     {
         try
         {
-            var tagEntity = _mapper.Map<Tag>(request);
-            //todo checking for the existence of a tag with the same content
-            //todo checking for the existence of a user with id
-            await _tagsRepository.UpdateAsync(tagEntity);
+            if (await _tagsRepository.GetAsync(request.Id) is null)
+            {
+                return new ExecutionResult<Tag>(new ErrorInfo($"Tag with id: {request.Id} is not exist."));
+            }
             
-            return new ExecutionResult<Tag>(tagEntity);
+            if (await _tagsRepository.GetAsync(request.Content) is not null)
+            {
+                return new ExecutionResult<Tag>(new ErrorInfo($"Tag with content: {request.Content} already exist."));
+            }
+            
+            var tagEntity = _mapper.Map<Tag>(request);
+
+            await _tagsRepository.UpdateAsync(tagEntity);
+
+            var updatedTag = await _tagsRepository.GetAsync(request.Id);
+            return new ExecutionResult<Tag>(updatedTag);
         }
         catch (Exception e)
         {

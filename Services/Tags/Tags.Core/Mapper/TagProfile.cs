@@ -9,7 +9,10 @@ public class TagProfile : Profile
 {
     public TagProfile()
     {
-        CreateMap<Tag, CreateTagCommand>().ReverseMap();
-        CreateMap<Tag, UpdateTagCommand>().ReverseMap();
+        CreateMap<CreateTagCommand, Tag>()
+            .ForMember(t => t.CreatedAt, opt => opt.MapFrom(_ => DateTime.Now))
+            .ReverseMap();
+        
+        CreateMap<UpdateTagCommand, Tag>().ReverseMap();
     }
 }

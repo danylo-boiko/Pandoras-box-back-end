@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Tags.Core.Models;
 using Tags.Core.Repositories.Interfaces;
