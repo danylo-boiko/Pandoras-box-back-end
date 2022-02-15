@@ -31,7 +31,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
     
-    public static IServiceCollection AddGrpc(this IServiceCollection serviceCollection, string grpcUrl)
+    public static IServiceCollection AddUsersGrpc(this IServiceCollection serviceCollection, string grpcUrl)
     {
         serviceCollection.AddGrpcClient<UsersProtoService.UsersProtoServiceClient>
             (client => client.Address = new Uri(grpcUrl));

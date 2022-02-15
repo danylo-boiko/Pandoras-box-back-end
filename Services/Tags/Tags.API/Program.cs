@@ -12,7 +12,7 @@ builder.Services
     .AddRepositories()
     .AddMediatr()
     .AddAutoMapper()
-    .AddGrpc(builder.Configuration["GrpcSettings:UsersUrl"]);
+    .AddUsersGrpc(builder.Configuration["GrpcSettings:UsersUrl"]);
 
 var app = builder.Build();
 

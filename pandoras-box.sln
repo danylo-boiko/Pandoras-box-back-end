@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tags.API", "Services\Tags\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tags.Core", "Services\Tags\Tags.Core\Tags.Core.csproj", "{B0014D0F-4345-46E5-8066-89AF200D690D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tags.Grpc", "Services\Tags\Tags.Grpc\Tags.Grpc.csproj", "{826E06DF-8BFF-4627-BF96-17B2B4F3CE4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{B0014D0F-4345-46E5-8066-89AF200D690D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0014D0F-4345-46E5-8066-89AF200D690D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0014D0F-4345-46E5-8066-89AF200D690D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{826E06DF-8BFF-4627-BF96-17B2B4F3CE4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{826E06DF-8BFF-4627-BF96-17B2B4F3CE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{826E06DF-8BFF-4627-BF96-17B2B4F3CE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{826E06DF-8BFF-4627-BF96-17B2B4F3CE4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{C6FEA7EF-AFE4-4A7F-969C-64B786638684} = {F263B6F2-9116-4575-8BE1-31E18B2C5C9A}
 		{45DE516E-83C6-41CB-A172-F8BE72226DAE} = {F0356062-C8E3-429D-B0D7-1F2EC98F98FC}
 		{B0014D0F-4345-46E5-8066-89AF200D690D} = {F0356062-C8E3-429D-B0D7-1F2EC98F98FC}
+		{826E06DF-8BFF-4627-BF96-17B2B4F3CE4C} = {F0356062-C8E3-429D-B0D7-1F2EC98F98FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8CE25762-0974-4A0D-AB0E-33ED973754C2}
