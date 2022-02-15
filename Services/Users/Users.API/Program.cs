@@ -1,7 +1,10 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Users.API.Extensions;
+using Users.Core.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +38,9 @@ builder.Services
     .AddIdentityConfiguration()
     .AddMediatr()
     .AddCustomServices()
-    .AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining(typeof(Program)));
+    .AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining(typeof(Program)))
+    .AddHealthChecks()
+    .AddDbContextCheck<BaseDbContext>();
 
 var app = builder.Build();
 
@@ -51,10 +56,19 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHealthChecks("/hc", new HealthCheckOptions
+    {
+        Predicate = _ => true,
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+});
 
 app.Run();

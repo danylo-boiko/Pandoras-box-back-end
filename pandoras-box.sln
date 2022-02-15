@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Videos.Core", "Services\Vid
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Grpc", "Services\Users\Users.Grpc\Users.Grpc.csproj", "{C61D0775-5DA8-4F91-BE0F-928CB3412AD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthChecks", "WebTools\HealthChecks\HealthChecks.csproj", "{C6FEA7EF-AFE4-4A7F-969C-64B786638684}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{C61D0775-5DA8-4F91-BE0F-928CB3412AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C61D0775-5DA8-4F91-BE0F-928CB3412AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C61D0775-5DA8-4F91-BE0F-928CB3412AD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6FEA7EF-AFE4-4A7F-969C-64B786638684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FEA7EF-AFE4-4A7F-969C-64B786638684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FEA7EF-AFE4-4A7F-969C-64B786638684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6FEA7EF-AFE4-4A7F-969C-64B786638684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{01E6A1A4-1888-4B0C-871A-F065B3818583} = {CFF29323-C3A6-45BC-8DD5-4683A8111967}
 		{D8F4D948-B423-4B1C-B74E-A3FA28B7ED95} = {CFF29323-C3A6-45BC-8DD5-4683A8111967}
 		{C61D0775-5DA8-4F91-BE0F-928CB3412AD7} = {D2C299E2-D2B0-40AA-979B-9F2F47F04FC6}
+		{C6FEA7EF-AFE4-4A7F-969C-64B786638684} = {F263B6F2-9116-4575-8BE1-31E18B2C5C9A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8CE25762-0974-4A0D-AB0E-33ED973754C2}
