@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection
             .AddEntityFrameworkSqlServer()
-            .AddDbContext<BaseDbContext>(o => {
+            .AddDbContext<UsersDbContext>(o => {
                 o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
             });
 

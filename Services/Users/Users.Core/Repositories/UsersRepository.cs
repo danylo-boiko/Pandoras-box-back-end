@@ -7,9 +7,9 @@ namespace Users.Core.Repositories;
 
 public class UsersRepository : IUsersRepository
 {
-    private readonly BaseDbContext _dbContext;
+    private readonly UsersDbContext _dbContext;
 
-    public UsersRepository(BaseDbContext dbContext)
+    public UsersRepository(UsersDbContext dbContext)
     {
         _dbContext = dbContext;
     }

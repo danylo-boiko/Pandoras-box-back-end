@@ -40,7 +40,7 @@ builder.Services
     .AddCustomServices()
     .AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining(typeof(Program)))
     .AddHealthChecks()
-    .AddDbContextCheck<BaseDbContext>();
+    .AddDbContextCheck<UsersDbContext>();
 
 var app = builder.Build();
 

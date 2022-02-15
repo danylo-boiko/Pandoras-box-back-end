@@ -26,7 +26,7 @@
         {
             serviceCollection
                 .AddEntityFrameworkSqlServer()
-                .AddDbContext<BaseDbContext>(o => {
+                .AddDbContext<UsersDbContext>(o => {
                     o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
                 });
 
@@ -38,7 +38,7 @@
             serviceCollection
                 .AddIdentity<ScamUser, ScamRole>()
                 .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<BaseDbContext>();
+                .AddEntityFrameworkStores<UsersDbContext>();
 
             serviceCollection.Configure<IdentityOptions>(o =>
             {

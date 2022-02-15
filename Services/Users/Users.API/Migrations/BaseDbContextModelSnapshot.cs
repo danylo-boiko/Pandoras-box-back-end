@@ -11,7 +11,7 @@ namespace Auth.API.Migrations
 {
     using Users.Core.Database;
 
-    [DbContext(typeof(BaseDbContext))]
+    [DbContext(typeof(UsersDbContext))]
     partial class BaseDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

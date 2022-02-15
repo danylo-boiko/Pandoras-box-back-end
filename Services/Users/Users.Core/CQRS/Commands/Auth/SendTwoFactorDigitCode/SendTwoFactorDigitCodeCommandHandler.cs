@@ -17,7 +17,7 @@ using Services.TwoFactorDigitCodeProvider;
 /// <seealso cref="MediatR.IRequestHandler{SendTwoFactorDigitCode}" />
 public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFactorDigitCodeCommand, ExecutionResult>
 {
-    private readonly BaseDbContext _dbContext;
+    private readonly UsersDbContext _dbContext;
     private readonly UserManager<ScamUser> _userManager;
     private readonly IEmailService _emailService;
 
@@ -25,7 +25,7 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
     /// Initializes a new instance of the <see cref="SendTwoFactorDigitCodeCommandHandler" /> class.
     /// </summary>
     /// <param name="dbContext">The database context.</param>
-    public SendTwoFactorDigitCodeCommandHandler(BaseDbContext dbContext,
+    public SendTwoFactorDigitCodeCommandHandler(UsersDbContext dbContext,
         UserManager<ScamUser> userManager, 
         IEmailService emailService)
     {
