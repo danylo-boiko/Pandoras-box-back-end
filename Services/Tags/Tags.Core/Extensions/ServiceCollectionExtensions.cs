@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Tags.Core.Database;
 using Tags.Core.GrpcServices;
 using Tags.Core.Protos;
 using Tags.Core.Repositories;
@@ -38,6 +39,13 @@ public static class ServiceCollectionExtensions
         
         serviceCollection.AddScoped<UsersGrpcService>();
 
+        return serviceCollection;
+    }
+    
+    public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddHealthChecks().AddDbContextCheck<TagsDbContext>();
+        
         return serviceCollection;
     }
 }

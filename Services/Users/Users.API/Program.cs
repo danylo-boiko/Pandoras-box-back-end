@@ -39,8 +39,7 @@ builder.Services
     .AddMediatr()
     .AddCustomServices()
     .AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining(typeof(Program)))
-    .AddHealthChecks()
-    .AddDbContextCheck<UsersDbContext>();
+    .AddHealthCheck();
 
 var app = builder.Build();
 

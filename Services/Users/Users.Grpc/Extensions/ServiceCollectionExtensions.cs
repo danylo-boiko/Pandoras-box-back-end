@@ -24,6 +24,13 @@ public static class ServiceCollectionExtensions
         
         return serviceCollection;
     }
+    
+    public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddHealthChecks();
+        
+        return serviceCollection;
+    }
 
     public static IServiceCollection AddCustomRepositories(this IServiceCollection serviceCollection)
     {

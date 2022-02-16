@@ -1,3 +1,5 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Storage.Grpc.Extensions;
 using Storage.Grpc.Services;
 
@@ -10,12 +12,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddCustomServices()
     .ConfigureCustomSettings(builder.Configuration)
+    .AddHealthCheck()
     .AddGrpc();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<StorageGrpcService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHealthChecks("/hc", new HealthCheckOptions
+    {
+        Predicate = _ => true,
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+
+    endpoints.MapGrpcService<StorageGrpcService>();
+
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client.");
+    });
+});
 
 app.Run();

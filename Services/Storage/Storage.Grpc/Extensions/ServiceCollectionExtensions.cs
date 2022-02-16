@@ -1,4 +1,6 @@
-﻿namespace Storage.Grpc.Extensions
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace Storage.Grpc.Extensions
 {
     using Core.Services;
     using Core.Settings;
@@ -17,6 +19,13 @@
             services.Configure<FileHashingSettings>(configuration.GetSection("FileHashingOptions"));
 
             return services;
+        }
+
+        public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddHealthChecks();
+
+            return serviceCollection;
         }
     }
 }

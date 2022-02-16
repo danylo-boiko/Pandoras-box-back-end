@@ -71,7 +71,12 @@
         {
             serviceCollection.AddScoped<IEmailService, EmailService>();
             serviceCollection.AddScoped<IUserService, UserService>();
-
+            return serviceCollection;
+        }
+        
+        public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddHealthChecks().AddDbContextCheck<UsersDbContext>();
             return serviceCollection;
         }
     }
