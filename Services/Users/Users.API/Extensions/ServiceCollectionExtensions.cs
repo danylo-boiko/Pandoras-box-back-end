@@ -26,7 +26,7 @@
         {
             serviceCollection
                 .AddEntityFrameworkSqlServer()
-                .AddDbContext<BaseDbContext>(o => {
+                .AddDbContext<UsersDbContext>(o => {
                     o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
                 });
 
@@ -38,7 +38,7 @@
             serviceCollection
                 .AddIdentity<ScamUser, ScamRole>()
                 .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<BaseDbContext>();
+                .AddEntityFrameworkStores<UsersDbContext>();
 
             serviceCollection.Configure<IdentityOptions>(o =>
             {
@@ -71,7 +71,12 @@
         {
             serviceCollection.AddScoped<IEmailService, EmailService>();
             serviceCollection.AddScoped<IUserService, UserService>();
-
+            return serviceCollection;
+        }
+        
+        public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddHealthChecks().AddDbContextCheck<UsersDbContext>();
             return serviceCollection;
         }
     }

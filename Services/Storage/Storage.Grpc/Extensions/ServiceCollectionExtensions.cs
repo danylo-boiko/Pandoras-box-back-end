@@ -18,5 +18,12 @@
 
             return services;
         }
+
+        public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddHealthChecks();
+
+            return serviceCollection;
+        }
     }
 }

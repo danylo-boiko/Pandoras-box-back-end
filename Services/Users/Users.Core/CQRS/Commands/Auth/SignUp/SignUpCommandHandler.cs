@@ -21,7 +21,7 @@ using SignIn;
 /// <seealso cref="IRequestHandler{SignUpCommand}" />
 public class SignUpCommandHandler : IRequestHandler<SignUpCommand, ExecutionResult>
 {
-    private readonly BaseDbContext _dbContext;
+    private readonly UsersDbContext _dbContext;
     private readonly UserManager<ScamUser> _userManager;
     private readonly IEmailService _emailService;
     private readonly IMediator _mediator;
@@ -31,7 +31,7 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, ExecutionResu
     /// </summary>
     /// <param name="dbContext">The database context.</param>
     public SignUpCommandHandler(
-        BaseDbContext dbContext,
+        UsersDbContext dbContext,
         UserManager<ScamUser> userManager,
         IEmailService emailService,
         IMediator mediator)

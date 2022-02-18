@@ -14,7 +14,7 @@ using Models.Auth;
 /// <seealso cref="IRequestHandler{SignInCommand}" />
 public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResult<SignedInUserDto>>
 {
-    private readonly BaseDbContext _dbContext;
+    private readonly UsersDbContext _dbContext;
     private readonly SignInManager<ScamUser> _signInManager;
 
     /// <summary>
@@ -22,7 +22,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResu
     /// </summary>
     /// <param name="dbContext">The database context.</param>
     /// <param name="signInManager"></param>
-    public SignInCommandHandler(BaseDbContext dbContext, 
+    public SignInCommandHandler(UsersDbContext dbContext, 
         SignInManager<ScamUser> signInManager)
     {
         _dbContext = dbContext;

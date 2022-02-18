@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class BaseDbContext : IdentityDbContext<
+    public class UsersDbContext : IdentityDbContext<
         ScamUser,
         ScamRole, 
         int, 
@@ -15,7 +15,7 @@
         ScamRoleClaim, 
         ScamUserToken>
     {
-        public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
+        public UsersDbContext(DbContextOptions<UsersDbContext> options) : base(options)
         {
         }
 
