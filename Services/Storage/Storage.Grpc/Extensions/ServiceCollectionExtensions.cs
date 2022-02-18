@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-namespace Storage.Grpc.Extensions
+﻿namespace Storage.Grpc.Extensions
 {
     using Core.Services;
     using Core.Settings;

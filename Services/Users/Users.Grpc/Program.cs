@@ -8,19 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDataAccess(builder.Configuration)
     .AddAutoMapper()
-    .AddCustomRepositories()
+    .AddRepositories()
     .AddHealthCheck()
     .AddGrpc();
 
 var app = builder.Build();
 
-app.MapGrpcService<UsersService>();
-
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapGrpcService<UsersService>();
+
     endpoints.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client.");
+
     endpoints.MapHealthChecks("/hc", new HealthCheckOptions
     {
         Predicate = _ => true,

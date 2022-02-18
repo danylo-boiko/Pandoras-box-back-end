@@ -1,6 +1,10 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tags.Core.Behaviours;
 using Tags.Core.Database;
 using Tags.Core.GrpcServices;
 using Tags.Core.Protos;
@@ -11,6 +15,17 @@ namespace Tags.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, IConfiguration configuration)
+    {
+        serviceCollection
+            .AddEntityFrameworkSqlServer()
+            .AddDbContext<TagsDbContext>(o => {
+                o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName));
+            });
+
+        return serviceCollection;
+    }
+    
     public static IServiceCollection AddAutoMapper(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -32,7 +47,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
     
-    public static IServiceCollection AddUsersGrpc(this IServiceCollection serviceCollection, string grpcUrl)
+    public static IServiceCollection AddUsersGrpcServer(this IServiceCollection serviceCollection, string grpcUrl)
     {
         serviceCollection.AddGrpcClient<UsersProtoService.UsersProtoServiceClient>
             (client => client.Address = new Uri(grpcUrl));
@@ -46,6 +61,15 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddHealthChecks().AddDbContextCheck<TagsDbContext>();
         
+        return serviceCollection;
+    }
+
+    public static IServiceCollection AddFluentValidation(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
         return serviceCollection;
     }
 }

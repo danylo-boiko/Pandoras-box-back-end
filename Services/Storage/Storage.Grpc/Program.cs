@@ -21,18 +21,16 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapGrpcService<StorageGrpcService>();
+
+    endpoints.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client.");
+    
     endpoints.MapHealthChecks("/hc", new HealthCheckOptions
     {
         Predicate = _ => true,
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
     });
 
-    endpoints.MapGrpcService<StorageGrpcService>();
-
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client.");
-    });
 });
 
 app.Run();

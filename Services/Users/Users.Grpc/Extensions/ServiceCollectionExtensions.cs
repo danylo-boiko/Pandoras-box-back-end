@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
 
-    public static IServiceCollection AddCustomRepositories(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddRepositories(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<IUsersRepository, UsersRepository>();
 
