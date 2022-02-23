@@ -56,13 +56,6 @@ public static class ServiceCollectionExtensions
 
         return serviceCollection;
     }
-    
-    public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
-    {
-        serviceCollection.AddHealthChecks().AddDbContextCheck<TagsDbContext>();
-        
-        return serviceCollection;
-    }
 
     public static IServiceCollection AddFluentValidation(this IServiceCollection serviceCollection)
     {

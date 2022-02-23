@@ -1,4 +1,5 @@
-﻿using NsfwDetectionPb;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using NsfwDetectionPb;
 using Videos.API.GrpcServices;
 
 namespace Videos.API.Extensions;
@@ -17,7 +18,8 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddHealthChecks();
+        serviceCollection.AddHealthChecks()
+            .AddCheck("Videos API", () => HealthCheckResult.Healthy());
         
         return serviceCollection;
     }
