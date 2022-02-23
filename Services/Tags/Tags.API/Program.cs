@@ -1,5 +1,6 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Tags.API.Extensions;
 using Tags.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

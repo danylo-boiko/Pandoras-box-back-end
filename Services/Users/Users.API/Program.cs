@@ -4,6 +4,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Users.API.Extensions;
+using Users.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
