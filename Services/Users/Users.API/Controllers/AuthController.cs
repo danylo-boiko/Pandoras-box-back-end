@@ -1,9 +1,10 @@
+using Users.Core.CQRS.Commands.Auth.SendTwoFactorDigitCode;
+using Users.Core.CQRS.Commands.Auth.SignIn;
+using Users.Core.CQRS.Commands.Auth.SignOut;
+using Users.Core.CQRS.Commands.Auth.SignUp;
+
 namespace Users.API.Controllers
 {
-    using Core.CQRS.Commands.SendTwoFactorDigitCode;
-    using Core.CQRS.Commands.SignIn;
-    using Core.CQRS.Commands.SignOut;
-    using Core.CQRS.Commands.SignUp;
     using LS.Helpers.Hosting.Extensions;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;

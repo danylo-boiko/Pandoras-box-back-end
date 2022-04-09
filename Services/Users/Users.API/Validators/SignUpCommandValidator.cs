@@ -1,6 +1,7 @@
-﻿namespace Users.API.Validators
+﻿using Users.Core.CQRS.Commands.Auth.SignUp;
+
+namespace Users.API.Validators
 {
-    using Core.CQRS.Commands.SignUp;
     using FluentValidation;
 
     public class SignUpCommandValidator : AbstractValidator<SignUpCommand>

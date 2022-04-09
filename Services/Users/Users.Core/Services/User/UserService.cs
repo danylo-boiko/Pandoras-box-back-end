@@ -9,11 +9,11 @@
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly BaseDbContext _dbContext;
+        private readonly UsersDbContext _dbContext;
 
         public UserService(
             IHttpContextAccessor httpContextAccessor,
-            BaseDbContext dbContext)
+            UsersDbContext dbContext)
         {
             _httpContextAccessor = httpContextAccessor;
             _dbContext = dbContext;

@@ -1,12 +1,12 @@
-﻿namespace Users.Core.CQRS.Commands.SignIn;
-
-using Database;
-using Database.Entities.Identity;
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Models.Auth;
+using Users.Core.Database;
+using Users.Core.Database.Entities.Identity;
+using Users.Core.Models.Auth;
+
+namespace Users.Core.CQRS.Commands.Auth.SignIn;
 
 /// <summary>
 /// SignInCommand handler.
@@ -14,7 +14,7 @@ using Models.Auth;
 /// <seealso cref="IRequestHandler{SignInCommand}" />
 public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResult<SignedInUserDto>>
 {
-    private readonly BaseDbContext _dbContext;
+    private readonly UsersDbContext _dbContext;
     private readonly SignInManager<ScamUser> _signInManager;
 
     /// <summary>
@@ -22,7 +22,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResu
     /// </summary>
     /// <param name="dbContext">The database context.</param>
     /// <param name="signInManager"></param>
-    public SignInCommandHandler(BaseDbContext dbContext, 
+    public SignInCommandHandler(UsersDbContext dbContext, 
         SignInManager<ScamUser> signInManager)
     {
         _dbContext = dbContext;

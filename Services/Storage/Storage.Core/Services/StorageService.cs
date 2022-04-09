@@ -1,8 +1,9 @@
-﻿namespace Storage.Core.Services
+﻿using Storage.Core.Enums;
+
+namespace Storage.Core.Services
 {
     using System.Security.Cryptography;
     using System.Text;
-    using Consts;
     using Exceptions;
     using Helpers;
     using Microsoft.Extensions.Options;
@@ -17,7 +18,7 @@
             _fileHashingOptions = fileHashingOptions;
         }
 
-        public async Task SaveMediaFile(byte[] fileBytes, FileCategories fileCategory, string fileExtension)
+        public async Task SaveMediaFile(byte[] fileBytes, FileCategory fileCategory, string fileExtension)
         {
             var fileName = GetFileName(fileBytes, fileExtension);
             var path = GetFilePath(fileName, fileCategory);
@@ -43,13 +44,13 @@
             return fileName;
         }
 
-        private static string GetFilePath(string fileName, FileCategories fileCategory)
+        private static string GetFilePath(string fileName, FileCategory fileCategory)
         {
             return fileCategory switch
             {
-                FileCategories.Avatar => StoragePathsHelper.GetAvatarPath(fileName),
-                FileCategories.VideoForChannel => StoragePathsHelper.GetChannelVideoPath(fileName),
-                _ => throw new InvalidFileCategoryException($"Unsupported file category has been provided.")
+                FileCategory.Avatar => StoragePathsHelper.GetAvatarPath(fileName),
+                FileCategory.VideoForChannel => StoragePathsHelper.GetChannelVideoPath(fileName),
+                _ => throw new InvalidFileCategoryException("Unsupported file category has been provided.")
             };
         }
 

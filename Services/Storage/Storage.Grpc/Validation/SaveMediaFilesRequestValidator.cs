@@ -1,6 +1,7 @@
-﻿namespace Storage.Grpc.Validation
+﻿using Storage.Core.Enums;
+
+namespace Storage.Grpc.Validation
 {
-    using Core.Consts;
     using FluentValidation;
 
     public class SaveMediaFilesRequestValidator : AbstractValidator<SaveMediaFilesRequest>
@@ -14,7 +15,7 @@
                 .WithMessage("Unsupported file format.");
 
             RuleFor(e => e.CategoryId)
-                .Must(e => Enum.IsDefined(typeof(FileCategories), e))
+                .Must(e => Enum.IsDefined(typeof(FileCategory), e))
                 .WithMessage("Invalid file category.");
 
             RuleFor(e => e.FileBytes)

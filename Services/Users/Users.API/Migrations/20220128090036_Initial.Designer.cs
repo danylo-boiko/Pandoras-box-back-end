@@ -12,7 +12,7 @@ namespace Auth.API.Migrations
 {
     using Users.Core.Database;
 
-    [DbContext(typeof(BaseDbContext))]
+    [DbContext(typeof(UsersDbContext))]
     [Migration("20220128090036_Initial")]
     partial class Initial
     {

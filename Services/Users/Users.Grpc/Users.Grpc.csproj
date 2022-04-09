@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>daf00cfa-2c0b-468a-8ce2-76d8a250c011</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protos\users.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.42.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.42.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Users.Core\Users.Core.csproj" />
+    </ItemGroup>
+
+</Project>

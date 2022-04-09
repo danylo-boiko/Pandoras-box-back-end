@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.2" />
+        <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.42.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="..\..\..\BuildingBlocks\NSFW.Grpc\protos\nsfw.proto" GrpcServices="Client">
+            <Link>Protos\nswf.proto</Link>
+        </Protobuf>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Videos.Core\Videos.Core.csproj" />
+    </ItemGroup>
+
+</Project>
