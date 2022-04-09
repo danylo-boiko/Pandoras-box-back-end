@@ -1,6 +1,7 @@
-﻿namespace Users.API.Validators
+﻿using Users.Core.CQRS.Commands.Auth.SendTwoFactorDigitCode;
+
+namespace Users.API.Validators
 {
-    using Core.CQRS.Commands.SendTwoFactorDigitCode;
     using FluentValidation;
 
     public class SendTwoFactorDigitCodeCommandValidator : AbstractValidator<SendTwoFactorDigitCodeCommand>

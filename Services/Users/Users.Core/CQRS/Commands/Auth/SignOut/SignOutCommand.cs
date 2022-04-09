@@ -1,7 +1,7 @@
-﻿namespace Users.Core.CQRS.Commands.SignOut;
-
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
+
+namespace Users.Core.CQRS.Commands.Auth.SignOut;
 
 /// <summary>
 /// SignOutCommand

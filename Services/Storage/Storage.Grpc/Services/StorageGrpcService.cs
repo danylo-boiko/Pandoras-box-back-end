@@ -1,6 +1,7 @@
-﻿namespace Storage.Grpc.Services
+﻿using Storage.Core.Enums;
+
+namespace Storage.Grpc.Services
 {
-    using Core.Consts;
     using Core.Services;
     using global::Grpc.Core;
 
@@ -25,7 +26,7 @@
 
                     var fileCategory = current.CategoryId;
 
-                    await _storageService.SaveMediaFile(fileBytes, (FileCategories)fileCategory, current.Extension);
+                    await _storageService.SaveMediaFile(fileBytes, (FileCategory)fileCategory, current.Extension);
                 }
 
                 return new SaveMediaFilesResponse { IsSuccess = true };
