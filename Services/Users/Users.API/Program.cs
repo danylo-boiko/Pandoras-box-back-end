@@ -4,7 +4,6 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Users.API.Extensions;
-using Users.Core.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,7 @@ builder.Services.AddSwaggerGen(o =>
             Email = "kostyabek@gmail.com",
             Name = "Kostiantyn Biektin"
         },
-        Title = "TaskMan Authentication API",
+        Title = "Pandora's Box",
         Version = "1.0.0",
     });
 

@@ -24,10 +24,12 @@
 
         public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
+            var conn = configuration.GetConnectionString("MSSQL");
+
             serviceCollection
                 .AddEntityFrameworkSqlServer()
                 .AddDbContext<UsersDbContext>(o => {
-                    o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
+                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
                 });
 
             return serviceCollection;

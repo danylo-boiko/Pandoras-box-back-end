@@ -1,19 +1,17 @@
-﻿namespace Users.Core.CQRS.Commands.SignUp;
-
-using System.Threading;
-using System.Threading.Tasks;
-using Consts;
-using Database;
-using Database.Entities.Identity;
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Models.Auth;
 using NodaTime;
-using Services.Email;
-using Services.TwoFactorDigitCodeProvider;
-using SignIn;
+using Users.Core.Consts;
+using Users.Core.CQRS.Commands.Auth.SignIn;
+using Users.Core.Database;
+using Users.Core.Database.Entities.Identity;
+using Users.Core.Models.Auth;
+using Users.Core.Services.Email;
+using Users.Core.Services.TwoFactorDigitCodeProvider;
+
+namespace Users.Core.CQRS.Commands.Auth.SignUp;
 
 /// <summary>
 /// SignUpCommand handler.

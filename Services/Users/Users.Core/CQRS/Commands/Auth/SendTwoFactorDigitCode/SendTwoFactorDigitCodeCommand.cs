@@ -1,7 +1,7 @@
-﻿namespace Users.Core.CQRS.Commands.SendTwoFactorDigitCode;
-
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
+
+namespace Users.Core.CQRS.Commands.Auth.SendTwoFactorDigitCode;
 
 /// <summary>
 /// SendTwoFactorDigitCode

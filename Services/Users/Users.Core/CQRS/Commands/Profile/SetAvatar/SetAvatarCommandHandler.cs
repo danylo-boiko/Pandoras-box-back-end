@@ -1,45 +1,26 @@
-﻿namespace Users.Core.CQRS.Commands.Profile.SetAvatar;
+﻿using Users.Core.Enums;
+
+namespace Users.Core.CQRS.Commands.Profile.SetAvatar;
 
 using System.Threading;
 using System.Threading.Tasks;
 using Configurations;
-using Consts;
 using Extensions;
 using Google.Protobuf;
 using Grpc.Net.Client;
 using LS.Helpers.Hosting.API;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-/// <summary>
-/// SetAvatarCommand handler.
-/// </summary>
-/// <seealso cref="IRequestHandler{SetAvatarCommand}" />
 public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, ExecutionResult>
 {
-    private readonly ILogger<SetAvatarCommandHandler> _logger;
     private readonly IOptions<StorageServiceOptions> _storageServiceOptions;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SetAvatarCommandHandler" /> class.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="storageServiceOptions"></param>
-    public SetAvatarCommandHandler(
-        ILogger<SetAvatarCommandHandler> logger,
-        IOptions<StorageServiceOptions> storageServiceOptions)
+    public SetAvatarCommandHandler(IOptions<StorageServiceOptions> storageServiceOptions)
     {
-        _logger = logger;
         _storageServiceOptions = storageServiceOptions;
     }
 
-    /// <summary>
-    /// Handles the specified request.
-    /// </summary>
-    /// <param name="request">The request: SetAvatarCommand</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>string</returns>
     public async Task<ExecutionResult> Handle(SetAvatarCommand request, CancellationToken cancellationToken)
     {
         try
@@ -54,7 +35,7 @@ public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, Executi
             var grpcRequest = new SaveMediaFilesRequest
             {
                 FileBytes = ByteString.CopyFrom(avatarBytes),
-                CategoryId = (int)FileCategories.Avatar,
+                CategoryId = (int)FileCategory.Avatar,
                 Extension = fileExtension
             };
 
@@ -70,7 +51,7 @@ public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, Executi
         }
         catch (Exception e)
         {
-            return new ExecutionResult(new ErrorInfo("Error while setting a new avatar."));
+            return new ExecutionResult(new ErrorInfo($"Error while setting a new avatar. {e.Message}"));
         }
     }
 }

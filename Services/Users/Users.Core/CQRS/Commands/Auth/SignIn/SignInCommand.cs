@@ -1,8 +1,8 @@
-﻿namespace Users.Core.CQRS.Commands.SignIn;
-
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
-using Models.Auth;
+using Users.Core.Models.Auth;
+
+namespace Users.Core.CQRS.Commands.Auth.SignIn;
 
 public sealed class SignInCommand : IRequest<ExecutionResult<SignedInUserDto>>
 {
