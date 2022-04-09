@@ -1,12 +1,10 @@
-﻿namespace Users.Core.CQRS.Commands.SignOut;
-
-using System.Threading;
-using System.Threading.Tasks;
-using Database.Entities.Identity;
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Services.User;
+using Users.Core.Database.Entities.Identity;
+using Users.Core.Services.User;
+
+namespace Users.Core.CQRS.Commands.Auth.SignOut;
 
 /// <summary>
 /// SignOutCommand handler.

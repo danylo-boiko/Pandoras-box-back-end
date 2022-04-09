@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(o =>
             Email = "kostyabek@gmail.com",
             Name = "Kostiantyn Biektin"
         },
-        Title = "TaskMan Authentication API",
+        Title = "Pandora's Box",
         Version = "1.0.0",
     });
 

@@ -1,6 +1,6 @@
-﻿namespace Storage.Core.Consts
+﻿namespace Users.Core.Enums
 {
-    public enum FileCategories
+    public enum FileCategory
     {
         Avatar = 1,
         VideoForChannel = 2

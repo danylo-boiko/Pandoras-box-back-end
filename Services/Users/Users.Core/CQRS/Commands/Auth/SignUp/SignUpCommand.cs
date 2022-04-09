@@ -1,8 +1,8 @@
-﻿namespace Users.Core.CQRS.Commands.SignUp;
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using LS.Helpers.Hosting.API;
 using MediatR;
+
+namespace Users.Core.CQRS.Commands.Auth.SignUp;
 
 /// <summary>
 /// SignUpCommand
