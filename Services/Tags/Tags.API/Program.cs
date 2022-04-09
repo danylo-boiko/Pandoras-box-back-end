@@ -14,7 +14,8 @@ builder.Services
     .AddRepositories()
     .AddMediatr()
     .AddAutoMapper()
-    .AddUsersGrpc(builder.Configuration["GrpcSettings:UsersUrl"])
+    .AddFluentValidation()
+    .AddUsersGrpcServer(builder.Configuration["GrpcSettings:UsersUrl"])
     .AddHealthCheck();
 
 var app = builder.Build();
@@ -34,6 +35,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
+    
     endpoints.MapHealthChecks("/hc", new HealthCheckOptions
     {
         Predicate = _ => true,

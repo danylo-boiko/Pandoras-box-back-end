@@ -1,18 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tags.Core.Database;
 
 namespace Tags.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, IConfiguration configuration)
+    public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
     {
-        serviceCollection
-            .AddEntityFrameworkSqlServer()
-            .AddDbContext<TagsDbContext>(o => {
-                o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
-            });
-
+        serviceCollection.AddHealthChecks()
+            .AddCheck("Tags API", () => HealthCheckResult.Healthy())
+            .AddDbContextCheck<TagsDbContext>("Tags MSSQL Server");
+        
         return serviceCollection;
     }
 }

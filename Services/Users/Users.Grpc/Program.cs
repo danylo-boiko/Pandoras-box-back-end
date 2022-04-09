@@ -1,5 +1,4 @@
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Users.Core.Extensions;
 using Users.Grpc.Extensions;
 using Users.Grpc.Services;
 
@@ -8,23 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDataAccess(builder.Configuration)
     .AddAutoMapper()
-    .AddCustomRepositories()
-    .AddHealthCheck()
+    .AddRepositories()
     .AddGrpc();
 
 var app = builder.Build();
-
-app.MapGrpcService<UsersService>();
 
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client.");
-    endpoints.MapHealthChecks("/hc", new HealthCheckOptions
+    endpoints.MapGrpcService<UsersService>();
+
+    endpoints.MapGet("/", async context =>
     {
-        Predicate = _ => true,
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client.");
     });
 });
 

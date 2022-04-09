@@ -1,15 +1,14 @@
-﻿namespace Users.API.Extensions
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace Users.API.Extensions
 {
-    using Core;
     using Core.Configurations;
     using Core.Database;
     using Core.Database.Entities.Identity;
     using Core.Services.Email;
     using Core.Services.User;
-    using MediatR;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
 
     public static class ServiceCollectionExtensions
     {
@@ -24,8 +23,6 @@
 
         public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            var conn = configuration.GetConnectionString("MSSQL");
-
             serviceCollection
                 .AddEntityFrameworkSqlServer()
                 .AddDbContext<UsersDbContext>(o => {
@@ -60,25 +57,24 @@
         {
             serviceCollection.Configure<GoogleSmtpCredentials>(configuration.GetSection(nameof(GoogleSmtpCredentials)));
             serviceCollection.Configure<StorageServiceOptions>(configuration.GetSection(nameof(StorageServiceOptions)));
+            
             return serviceCollection;
         }
-
-        public static IServiceCollection AddMediatr(this IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddMediatR(typeof(MediatREntryPoint).Assembly);
-            return serviceCollection;
-        }
-
+        
         public static IServiceCollection AddCustomServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IEmailService, EmailService>();
             serviceCollection.AddScoped<IUserService, UserService>();
+            
             return serviceCollection;
         }
         
         public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddHealthChecks().AddDbContextCheck<UsersDbContext>();
+            serviceCollection.AddHealthChecks()
+                .AddCheck("Users API", () => HealthCheckResult.Healthy())
+                .AddDbContextCheck<UsersDbContext>("Users MSSQL Server");
+            
             return serviceCollection;
         }
     }

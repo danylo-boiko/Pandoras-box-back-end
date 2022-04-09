@@ -1,5 +1,3 @@
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Storage.Grpc.Extensions;
 using Storage.Grpc.Services;
 
@@ -12,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddCustomServices()
     .ConfigureCustomSettings(builder.Configuration)
-    .AddHealthCheck()
     .AddGrpc();
 
 var app = builder.Build();
@@ -21,12 +18,6 @@ app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHealthChecks("/hc", new HealthCheckOptions
-    {
-        Predicate = _ => true,
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    });
-
     endpoints.MapGrpcService<StorageGrpcService>();
 
     endpoints.MapGet("/", async context =>
