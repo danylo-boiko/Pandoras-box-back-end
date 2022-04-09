@@ -1,16 +1,17 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Users.Core.Database;
 
 namespace Users.API.Extensions
 {
     using Core.Configurations;
-    using Core.Database;
     using Core.Database.Entities.Identity;
     using Core.Services.Email;
     using Core.Services.User;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Identity;
 
-    public static class ServiceCollectionExtensions
+    internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCookieAuthentication(this IServiceCollection serviceCollection)
         {

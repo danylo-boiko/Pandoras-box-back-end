@@ -1,4 +1,5 @@
-﻿using Storage.Core.Enums;
+﻿using Storage.Core.Database.Entities;
+using Storage.Core.Enums;
 
 namespace Storage.Core.Services
 {
@@ -13,16 +14,26 @@ namespace Storage.Core.Services
     {
         private readonly IOptions<FileHashingSettings> _fileHashingOptions;
 
-        public StorageService(IOptions<FileHashingSettings> fileHashingOptions)
+        public StorageService(
+            IOptions<FileHashingSettings> fileHashingOptions)
         {
             _fileHashingOptions = fileHashingOptions;
         }
 
-        public async Task SaveMediaFile(byte[] fileBytes, FileCategory fileCategory, string fileExtension)
+        public async Task<StorageItem> SaveMediaFile(byte[] fileBytes, FileCategory fileCategory, string fileExtension)
         {
             var fileName = GetFileName(fileBytes, fileExtension);
             var path = GetFilePath(fileName, fileCategory);
             await WriteFileAsync(fileBytes, path);
+
+            var storageItem = new StorageItem
+            {
+                Name = fileName,
+                Extension = fileExtension,
+                Location = path
+            };
+
+            return storageItem;
         }
 
         private string GetFileName(byte[] fileBytes, string fileExtension)

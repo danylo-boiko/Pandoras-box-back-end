@@ -1,10 +1,10 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
+using MediatR;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Users.API.Extensions;
-using Users.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,10 +36,10 @@ builder.Services
     .AddDataAccess(builder.Configuration)
     .AddConfigurations(builder.Configuration)
     .AddIdentityConfiguration()
-    .AddMediatr()
     .AddCustomServices()
     .AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining(typeof(Program)))
-    .AddHealthCheck();
+    .AddHealthCheck()
+    .AddMediatR(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
