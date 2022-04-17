@@ -38,6 +38,7 @@
 	    <Folder Include="CQRS\Commands\Auth\SignOut\" />
 	    <Folder Include="CQRS\Commands\Auth\SignUp\" />
 	    <Folder Include="CQRS\Commands\Auth\SignIn\" />
+	    <Folder Include="CQRS\Commands\Profile\SetProfileInfo\" />
 	    <Folder Include="CQRS\Commands\Profile\SetAvatar\" />
 	</ItemGroup>
 	
