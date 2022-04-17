@@ -5,7 +5,7 @@
 
     public class ScamUser : IdentityUser<int>
     {
-        public string? AvatarUrl { get; set; }
+        public int? AvatarId { get; set; }
 
         public string? Bio { get; set; }
 

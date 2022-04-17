@@ -1,4 +1,5 @@
-﻿using Users.Core.Enums;
+﻿using Users.Core.Database;
+using Users.Core.Enums;
 using Users.Core.Services.User;
 
 namespace Users.Core.CQRS.Commands.Profile.SetAvatar;
@@ -17,6 +18,7 @@ public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, Executi
 {
     private readonly IOptions<StorageServiceOptions> _storageServiceOptions;
     private readonly IUserService _userService;
+    private readonly UsersDbContext _dbContext;
 
     public SetAvatarCommandHandler(
         IOptions<StorageServiceOptions> storageServiceOptions,
