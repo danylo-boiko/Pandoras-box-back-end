@@ -3,6 +3,6 @@
     public enum FileCategory
     {
         Avatar = 1,
-        VideoForChannel = 2
+        Video = 2
     }
 }

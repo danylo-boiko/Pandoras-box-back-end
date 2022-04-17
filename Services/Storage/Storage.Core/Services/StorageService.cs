@@ -30,7 +30,8 @@ namespace Storage.Core.Services
             {
                 Name = fileName,
                 Extension = fileExtension,
-                Location = path
+                Location = path,
+                Category = fileCategory
             };
 
             return storageItem;
@@ -50,7 +51,7 @@ namespace Storage.Core.Services
                 fileNameBuilder.Append(b.ToString("x2").ToLower());
             }
 
-            var fileName = $"{fileNameBuilder}{fileExtension}";
+            var fileName = $"{fileNameBuilder}-{DateTime.UtcNow.ToString("dd-MM-yyyy_hh-mm-ss")}{fileExtension}";
 
             return fileName;
         }
@@ -60,7 +61,7 @@ namespace Storage.Core.Services
             return fileCategory switch
             {
                 FileCategory.Avatar => StoragePathsHelper.GetAvatarPath(fileName),
-                FileCategory.VideoForChannel => StoragePathsHelper.GetChannelVideoPath(fileName),
+                FileCategory.Video => StoragePathsHelper.GetChannelVideoPath(fileName),
                 _ => throw new InvalidFileCategoryException("Unsupported file category has been provided.")
             };
         }

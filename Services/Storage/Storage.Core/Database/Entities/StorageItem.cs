@@ -1,4 +1,6 @@
-﻿namespace Storage.Core.Database.Entities
+﻿using Storage.Core.Enums;
+
+namespace Storage.Core.Database.Entities
 {
     public class StorageItem
     {
@@ -9,5 +11,7 @@
         public string Extension { get; set; }
 
         public string Location { get; set; }
+
+        public FileCategory Category { get; set; }
     }
 }

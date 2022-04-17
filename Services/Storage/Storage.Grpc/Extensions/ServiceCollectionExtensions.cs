@@ -1,6 +1,7 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Storage.Core.Database;
+using Storage.Core.Repositories.StorageItem;
+using Storage.Core.Repositories.UserStorageItem;
 
 namespace Storage.Grpc.Extensions
 {
@@ -14,7 +15,7 @@ namespace Storage.Grpc.Extensions
             serviceCollection
                 .AddEntityFrameworkSqlServer()
                 .AddDbContext<StorageDbContext>(o => {
-                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName));
+                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
                 });
 
             return serviceCollection;
@@ -22,6 +23,8 @@ namespace Storage.Grpc.Extensions
         public static IServiceCollection AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<IStorageService, StorageService>();
+            services.AddScoped<IStorageItemRepository, StorageItemRepository>();
+            services.AddScoped<IUserStorageItemRepository, UserStorageItemRepository>();
 
             return services;
         }
