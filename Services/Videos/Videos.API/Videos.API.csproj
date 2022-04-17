@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\..\..\BuildingBlocks\NSFW.Grpc\protos\nsfw.proto" GrpcServices="Client">
+        <Protobuf Include="..\..\NSFW\NSFW.Grpc\protos\nsfw.proto" GrpcServices="Client">
             <Link>Protos\nswf.proto</Link>
         </Protobuf>
     </ItemGroup>
