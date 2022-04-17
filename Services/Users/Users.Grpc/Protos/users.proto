@@ -12,7 +12,7 @@ service UsersProtoService {
 
 message UserModel {
   int32 id = 1;
-  google.protobuf.StringValue avatarUrl = 2;
+  google.protobuf.StringValue avatarId = 2;
   google.protobuf.StringValue bio = 3;
   string userName = 4;
   string email = 5;

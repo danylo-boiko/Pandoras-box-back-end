@@ -1,4 +1,5 @@
-﻿using Storage.Core.Enums;
+﻿using Storage.Core.Database.Entities;
+using Storage.Core.Enums;
 
 namespace Storage.Core.Services
 {
@@ -13,16 +14,27 @@ namespace Storage.Core.Services
     {
         private readonly IOptions<FileHashingSettings> _fileHashingOptions;
 
-        public StorageService(IOptions<FileHashingSettings> fileHashingOptions)
+        public StorageService(
+            IOptions<FileHashingSettings> fileHashingOptions)
         {
             _fileHashingOptions = fileHashingOptions;
         }
 
-        public async Task SaveMediaFile(byte[] fileBytes, FileCategory fileCategory, string fileExtension)
+        public async Task<StorageItem> SaveMediaFile(byte[] fileBytes, FileCategory fileCategory, string fileExtension)
         {
             var fileName = GetFileName(fileBytes, fileExtension);
             var path = GetFilePath(fileName, fileCategory);
             await WriteFileAsync(fileBytes, path);
+
+            var storageItem = new StorageItem
+            {
+                Name = fileName,
+                Extension = fileExtension,
+                Location = path,
+                Category = fileCategory
+            };
+
+            return storageItem;
         }
 
         private string GetFileName(byte[] fileBytes, string fileExtension)
@@ -39,7 +51,7 @@ namespace Storage.Core.Services
                 fileNameBuilder.Append(b.ToString("x2").ToLower());
             }
 
-            var fileName = $"{fileNameBuilder}{fileExtension}";
+            var fileName = $"{fileNameBuilder}-{DateTime.UtcNow.ToString("dd-MM-yyyy_hh-mm-ss")}{fileExtension}";
 
             return fileName;
         }
@@ -49,7 +61,7 @@ namespace Storage.Core.Services
             return fileCategory switch
             {
                 FileCategory.Avatar => StoragePathsHelper.GetAvatarPath(fileName),
-                FileCategory.VideoForChannel => StoragePathsHelper.GetChannelVideoPath(fileName),
+                FileCategory.Video => StoragePathsHelper.GetChannelVideoPath(fileName),
                 _ => throw new InvalidFileCategoryException("Unsupported file category has been provided.")
             };
         }

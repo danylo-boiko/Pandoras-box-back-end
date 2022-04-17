@@ -9,5 +9,5 @@ using Microsoft.AspNetCore.Http;
 /// </summary>
 public sealed class SetAvatarCommand : IRequest<ExecutionResult>
 {
-    public IFormFile Avatar { get; set; }
+    public IFormFile Avatar { get; init; }
 }

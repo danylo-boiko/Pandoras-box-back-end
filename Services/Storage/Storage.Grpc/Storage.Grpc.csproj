@@ -8,16 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\storage.proto" GrpcServices="Server" />
+    <None Remove="Protos\storage.proto" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Calzolari.Grpc.AspNetCore.Validation" Version="6.1.1" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.42.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Storage.Core\Storage.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\storage.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>
