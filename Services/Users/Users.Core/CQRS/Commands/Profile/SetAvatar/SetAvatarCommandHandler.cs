@@ -1,4 +1,5 @@
 ﻿using Users.Core.Enums;
+using Users.Core.Services.User;
 
 namespace Users.Core.CQRS.Commands.Profile.SetAvatar;
 
@@ -15,10 +16,14 @@ using Microsoft.Extensions.Options;
 public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, ExecutionResult>
 {
     private readonly IOptions<StorageServiceOptions> _storageServiceOptions;
+    private readonly IUserService _userService;
 
-    public SetAvatarCommandHandler(IOptions<StorageServiceOptions> storageServiceOptions)
+    public SetAvatarCommandHandler(
+        IOptions<StorageServiceOptions> storageServiceOptions,
+        IUserService userService)
     {
         _storageServiceOptions = storageServiceOptions;
+        _userService = userService;
     }
 
     public async Task<ExecutionResult> Handle(SetAvatarCommand request, CancellationToken cancellationToken)
@@ -32,11 +37,14 @@ public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, Executi
 
             var avatarBytes = await request.Avatar.GetBytesAsync();
             var fileExtension = Path.GetExtension(request.Avatar.FileName);
+
+            var userId = _userService.UserId;
             var grpcRequest = new SaveMediaFilesRequest
             {
                 FileBytes = ByteString.CopyFrom(avatarBytes),
                 CategoryId = (int)FileCategory.Avatar,
-                Extension = fileExtension
+                Extension = fileExtension,
+                UserId = userId
             };
 
             using var call = grpcClient.SaveMediaFiles();

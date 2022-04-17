@@ -1,13 +1,13 @@
-using Users.Core.Extensions;
 using Users.Grpc.Extensions;
 using Users.Grpc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddDataAccess(builder.Configuration)
     .AddAutoMapper()
     .AddRepositories()
+    .AddDataAccess(builder.Configuration)
+    .AddCookieAuthentication()
     .AddGrpc();
 
 var app = builder.Build();

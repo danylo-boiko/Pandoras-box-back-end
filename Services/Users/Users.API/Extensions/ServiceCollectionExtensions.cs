@@ -1,19 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Users.Core.Configurations;
 using Users.Core.Database;
+using Users.Core.Database.Entities.Identity;
+using Users.Core.Repositories;
+using Users.Core.Repositories.Interfaces;
+using Users.Core.Services.Email;
+using Users.Core.Services.User;
 
-namespace Users.API.Extensions
+namespace Users.API.Extensions;
+
+public static class ServiceCollectionExtensions
 {
-    using Core.Configurations;
-    using Core.Database.Entities.Identity;
-    using Core.Services.Email;
-    using Core.Services.User;
-    using Microsoft.AspNetCore.Authentication.Cookies;
-    using Microsoft.AspNetCore.Identity;
-
-    internal static class ServiceCollectionExtensions
+    public static IServiceCollection AddAutoMapper(this IServiceCollection serviceCollection)
     {
-        public static IServiceCollection AddCookieAuthentication(this IServiceCollection serviceCollection)
+        serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
+        
+        return serviceCollection;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddScoped<IUsersRepository, UsersRepository>();
+
+        return serviceCollection;
+    }
+
+     public static IServiceCollection AddCookieAuthentication(this IServiceCollection serviceCollection)
         {
             serviceCollection
                 .AddAuthentication()
@@ -27,7 +43,7 @@ namespace Users.API.Extensions
             serviceCollection
                 .AddEntityFrameworkSqlServer()
                 .AddDbContext<UsersDbContext>(o => {
-                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
+                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(UsersDbContext).Assembly.FullName));
                 });
 
             return serviceCollection;
@@ -78,5 +94,4 @@ namespace Users.API.Extensions
             
             return serviceCollection;
         }
-    }
 }

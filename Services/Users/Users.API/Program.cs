@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Users.API.Extensions;
+using Users.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,10 +37,10 @@ builder.Services
     .AddDataAccess(builder.Configuration)
     .AddConfigurations(builder.Configuration)
     .AddIdentityConfiguration()
+    .AddMediatR(typeof(MediatREntryPoint).Assembly)
     .AddCustomServices()
     .AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining(typeof(Program)))
-    .AddHealthCheck()
-    .AddMediatR(Assembly.GetExecutingAssembly());
+    .AddHealthCheck();
 
 var app = builder.Build();
 
