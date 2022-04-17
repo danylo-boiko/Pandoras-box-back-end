@@ -7,12 +7,12 @@
 
     public class UsersDbContext : IdentityDbContext<
         ScamUser,
-        ScamRole, 
-        int, 
-        ScamUserClaim, 
-        ScamUserRole, 
-        ScamUserLogin, 
-        ScamRoleClaim, 
+        ScamRole,
+        int,
+        ScamUserClaim,
+        ScamUserRole,
+        ScamUserLogin,
+        ScamRoleClaim,
         ScamUserToken>
     {
         public UsersDbContext(DbContextOptions<UsersDbContext> options) : base(options)

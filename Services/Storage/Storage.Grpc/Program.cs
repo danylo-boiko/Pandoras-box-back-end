@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
+    .AddDataAccess(builder.Configuration)
     .AddCustomServices()
     .ConfigureCustomSettings(builder.Configuration)
     .AddGrpc();
