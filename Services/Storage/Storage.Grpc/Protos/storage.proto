@@ -6,6 +6,7 @@ package storage;
 
 service Storage {
 	rpc SaveMediaFiles(stream SaveMediaFilesRequest) returns (SaveMediaFilesResponse);
+	rpc GetUserCurrentAvatarData(GetUserCurrentAvatarDataRequest) returns (GetUserCurrentAvatarDataResponse);
 }
 
 message SaveMediaFilesRequest {
@@ -18,4 +19,13 @@ message SaveMediaFilesRequest {
 message SaveMediaFilesResponse {
 	bool isSuccess = 1;
 	string message = 2;
+}
+
+message GetUserCurrentAvatarDataRequest {
+	int32 userId = 1;
+}
+
+message GetUserCurrentAvatarDataResponse {
+	bytes avatarBytes = 1;
+	string extension = 2;
 }

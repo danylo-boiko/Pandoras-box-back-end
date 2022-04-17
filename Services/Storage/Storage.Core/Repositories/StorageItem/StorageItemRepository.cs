@@ -1,4 +1,5 @@
-﻿using Storage.Core.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using Storage.Core.Database;
 
 namespace Storage.Core.Repositories.StorageItem
 {
@@ -15,6 +16,12 @@ namespace Storage.Core.Repositories.StorageItem
         {
             _dbContext.StorageItems.Add(item);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Database.Entities.StorageItem?> GetById(int id)
+        {
+            var storageItem = await _dbContext.StorageItems.SingleOrDefaultAsync(e => e.Id == id);
+            return storageItem;
         }
     }
 }

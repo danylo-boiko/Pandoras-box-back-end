@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Google.Protobuf;
 using Storage.Core.Database;
 using Storage.Core.Database.Entities;
 using Storage.Core.Enums;
@@ -84,6 +85,26 @@ namespace Storage.Grpc.Services
             }
             var message = isSuccess ? string.Empty : $"Could not upload files: {builder}";
             return new SaveMediaFilesResponse { IsSuccess = isSuccess, Message = message};
+        }
+
+        public override async Task<GetUserCurrentAvatarDataResponse> GetUserCurrentAvatarData(GetUserCurrentAvatarDataRequest request, ServerCallContext context)
+        {
+            var userStorageItem = await _userStorageItemRepository.GetByUserId(request.UserId);
+
+            if (userStorageItem is null)
+            {
+                return new GetUserCurrentAvatarDataResponse
+                {
+                    AvatarBytes = ByteString.Empty
+                };
+            }
+
+            var bytes = await File.ReadAllBytesAsync(userStorageItem.StorageItem.Location);
+            return new GetUserCurrentAvatarDataResponse
+            {
+                AvatarBytes = ByteString.CopyFrom(bytes),
+                Extension = userStorageItem.StorageItem.Extension
+            };
         }
     }
 }

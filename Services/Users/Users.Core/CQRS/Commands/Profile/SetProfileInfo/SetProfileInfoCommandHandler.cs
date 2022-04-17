@@ -1,6 +1,5 @@
 ﻿using LS.Helpers.Hosting.API;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Users.Core.Database;
 using Users.Core.Services.User;
 

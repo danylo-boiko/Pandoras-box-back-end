@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CQRS\Queries\**" />
-    <EmbeddedResource Remove="CQRS\Queries\**" />
-    <None Remove="CQRS\Queries\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Protos\storage.proto" />
   </ItemGroup>
 
@@ -40,6 +34,7 @@
 	    <Folder Include="CQRS\Commands\Auth\SignIn\" />
 	    <Folder Include="CQRS\Commands\Profile\SetProfileInfo\" />
 	    <Folder Include="CQRS\Commands\Profile\SetAvatar\" />
+	    <Folder Include="CQRS\Queries\GetProfileAvatar\" />
 	</ItemGroup>
 	
 	<ItemGroup>
