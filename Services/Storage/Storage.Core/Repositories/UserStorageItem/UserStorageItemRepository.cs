@@ -24,8 +24,7 @@ namespace Storage.Core.Repositories.UserStorageItem
             var record = await _dbContext
                 .UsersStorageItems
                 .Include(e => e.StorageItem)
-                .SingleOrDefaultAsync(e => e.UserId == userId &&
-                                           e.StorageItem.Category == storageItemCategory);
+                .SingleOrDefaultAsync(e => e.UserId == userId && e.StorageItem.Category == storageItemCategory);
 
             return record;
         }
