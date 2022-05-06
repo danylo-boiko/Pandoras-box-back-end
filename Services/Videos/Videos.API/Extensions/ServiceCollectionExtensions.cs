@@ -18,8 +18,7 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddHealthChecks()
-            .AddCheck("Videos API", () => HealthCheckResult.Healthy());
+        serviceCollection.AddHealthChecks().AddCheck("Videos API", () => HealthCheckResult.Healthy());
         
         return serviceCollection;
     }
