@@ -23,9 +23,6 @@
     <ItemGroup>
         <Folder Include="CQRS\Commands\DeleteVideo" />
         <Folder Include="CQRS\Commands\UpdateVideo" />
-        <Folder Include="CQRS\Queries\GetVideoById" />
-        <Folder Include="CQRS\Queries\GetVideosByTagId" />
-        <Folder Include="CQRS\Queries\GetVideosByUserId" />
     </ItemGroup>
 
     <ItemGroup>

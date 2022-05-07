@@ -2,6 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Videos.Core.CQRS.Commands.CreateVideo;
+using Videos.Core.CQRS.Queries.GetVideoById;
+using Videos.Core.CQRS.Queries.GetVideosByTagId;
+using Videos.Core.CQRS.Queries.GetVideosByUserId;
+using Videos.Core.Database;
 
 namespace Videos.API.Controllers;
 
@@ -14,6 +18,41 @@ public class VideosController : Controller
     public VideosController(IMediator mediator)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
+    
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get([FromRoute] int id)
+    {
+        var result = await _mediator.Send(new GetVideoByIdQuery
+        {
+            Id = id
+        });
+        
+        return this.FromExecutionResult(result);
+    }
+    
+    [HttpGet("tag/{tagId}")]
+    public async Task<IActionResult> GetByTagId([FromRoute] int tagId, [FromQuery]PaginationFilter paginationFilter)
+    {
+        var result = await _mediator.Send(new GetVideosByTagIdQuery
+        {
+            TagId = tagId,
+            PaginationFilter = paginationFilter
+        });
+        
+        return this.FromExecutionResult(result);
+    }
+    
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetByUserId([FromRoute] int userId, [FromQuery]PaginationFilter paginationFilter)
+    {
+        var result = await _mediator.Send(new GetVideosByUserIdQuery
+        {
+            UserId = userId,
+            PaginationFilter = paginationFilter
+        });
+        
+        return this.FromExecutionResult(result);
     }
     
     [HttpPost]
