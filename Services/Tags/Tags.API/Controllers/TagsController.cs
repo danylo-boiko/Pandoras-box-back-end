@@ -33,7 +33,7 @@ public class TagsController : Controller
     }
     
     [HttpGet("pattern/{pattern}")]
-    public async Task<IActionResult> GetByPattern([FromRoute] string pattern, [FromQuery]PaginationFilter paginationFilter)
+    public async Task<IActionResult> Get([FromRoute] string pattern, [FromQuery]PaginationFilter paginationFilter)
     {
         var result = await _mediator.Send(new GetTagsByPatternQuery
         {
@@ -53,7 +53,7 @@ public class TagsController : Controller
     }
     
     [HttpPut]
-    public async Task<IActionResult> Create([FromBody] UpdateTagCommand command)
+    public async Task<IActionResult> Update([FromBody] UpdateTagCommand command)
     {
         var result = await _mediator.Send(command);
         

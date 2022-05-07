@@ -10,7 +10,7 @@ public class NsfwDetectionGrpcService
 
     public NsfwDetectionGrpcService(NsfwDetectionProtoService.NsfwDetectionProtoServiceClient nsfwDetectionProtoService)
     {
-        _nsfwDetectionProtoService = nsfwDetectionProtoService;
+        _nsfwDetectionProtoService = nsfwDetectionProtoService ?? throw new ArgumentNullException(nameof(nsfwDetectionProtoService));
     }
 
     public async Task<VideoDetectionResponse> DetectFromVideo(IFormFile videoFile)

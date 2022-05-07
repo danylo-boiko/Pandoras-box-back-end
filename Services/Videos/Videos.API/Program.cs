@@ -12,6 +12,9 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddDataAccess(builder.Configuration)
     .AddMediatr()
+    .AddStorageGrpc(builder.Configuration["GrpcServers:Storage"])
+    .AddUsersGrpc(builder.Configuration["GrpcServers:Users"])
+    .AddTagsGrpc(builder.Configuration["GrpcServers:Tags"])
     .AddNsfwGrpc(builder.Configuration["GrpcServers:NsfwDetection"])
     .AddHealthCheck();
 

@@ -7,7 +7,8 @@ builder.Services
     .AddDataAccess(builder.Configuration)
     .AddCustomServices()
     .ConfigureCustomSettings(builder.Configuration)
-    .AddGrpc();
+    .AddGrpc()
+    .AddServiceOptions<StorageGrpcService>(options => { options.MaxReceiveMessageSize = 100 * 1024 * 1024; });
 
 var app = builder.Build();
 
