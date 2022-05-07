@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Videos.Core.CQRS.Commands.CreateVideo;
+using Videos.Core.CQRS.Commands.DeleteVideo;
 using Videos.Core.CQRS.Queries.GetVideoById;
 using Videos.Core.CQRS.Queries.GetVideosByTagId;
 using Videos.Core.CQRS.Queries.GetVideosByUserId;
@@ -60,6 +61,17 @@ public class VideosController : Controller
     {
         var result = await _mediator.Send(command);
         
+        return this.FromExecutionResult(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        var result = await _mediator.Send(new DeleteVideoCommand
+        {
+            Id = id
+        });
+
         return this.FromExecutionResult(result);
     }
 }

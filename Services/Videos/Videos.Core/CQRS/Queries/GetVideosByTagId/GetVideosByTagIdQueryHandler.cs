@@ -6,11 +6,11 @@ using Videos.Core.Database.Entities;
 
 namespace Videos.Core.CQRS.Queries.GetVideosByTagId;
 
-public class GetVideosByTagIdHandler : IRequestHandler<GetVideosByTagIdQuery, ExecutionResult<IList<Video>>>
+public class GetVideosByTagIdQueryHandler : IRequestHandler<GetVideosByTagIdQuery, ExecutionResult<IList<Video>>>
 {
     private readonly VideosDbContext _videosDbContext;
 
-    public GetVideosByTagIdHandler(VideosDbContext videosDbContext)
+    public GetVideosByTagIdQueryHandler(VideosDbContext videosDbContext)
     {
         _videosDbContext = videosDbContext ?? throw new ArgumentNullException(nameof(videosDbContext));
     }

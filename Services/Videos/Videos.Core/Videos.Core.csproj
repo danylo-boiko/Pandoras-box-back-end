@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="CQRS\Commands\DeleteVideo" />
         <Folder Include="CQRS\Commands\UpdateVideo" />
     </ItemGroup>
 

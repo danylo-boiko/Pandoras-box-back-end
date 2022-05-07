@@ -5,11 +5,11 @@ using Tags.Core.Repositories.Interfaces;
 
 namespace Tags.Core.CQRS.Queries.GetTagsByPattern;
 
-public class GetTagsByPatternHandler : IRequestHandler<GetTagsByPatternQuery, ExecutionResult<IList<Tag>>>
+public class GetTagsByPatternQueryHandler : IRequestHandler<GetTagsByPatternQuery, ExecutionResult<IList<Tag>>>
 {
     private readonly ITagsRepository _tagsRepository;
 
-    public GetTagsByPatternHandler(ITagsRepository tagsRepository)
+    public GetTagsByPatternQueryHandler(ITagsRepository tagsRepository)
     {
         _tagsRepository = tagsRepository ?? throw new ArgumentNullException(nameof(tagsRepository));
     }

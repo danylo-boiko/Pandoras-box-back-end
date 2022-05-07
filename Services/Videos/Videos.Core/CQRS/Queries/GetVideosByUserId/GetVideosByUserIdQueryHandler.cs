@@ -1,18 +1,16 @@
-﻿using System.Linq;
-using LS.Helpers.Hosting.API;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Videos.Core.CQRS.Queries.GetVideoById;
 using Videos.Core.Database;
 using Videos.Core.Database.Entities;
 
 namespace Videos.Core.CQRS.Queries.GetVideosByUserId;
 
-public class GetVideosByUserIdHandler : IRequestHandler<GetVideosByUserIdQuery, ExecutionResult<IList<Video>>>
+public class GetVideosByUserIdQueryHandler : IRequestHandler<GetVideosByUserIdQuery, ExecutionResult<IList<Video>>>
 {
     private readonly VideosDbContext _videosDbContext;
 
-    public GetVideosByUserIdHandler(VideosDbContext videosDbContext)
+    public GetVideosByUserIdQueryHandler(VideosDbContext videosDbContext)
     {
         _videosDbContext = videosDbContext ?? throw new ArgumentNullException(nameof(videosDbContext));
     }
