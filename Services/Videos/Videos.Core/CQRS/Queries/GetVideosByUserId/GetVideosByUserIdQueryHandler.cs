@@ -19,7 +19,9 @@ public class GetVideosByUserIdQueryHandler : IRequestHandler<GetVideosByUserIdQu
     {
         try
         {
-            var videos = _videosDbContext.Videos.Where(v => v.AuthorId.Equals(request.UserId));
+            var videos = _videosDbContext.Videos
+                .Include(v => v.VideoTags)
+                .Where(v => v.AuthorId.Equals(request.UserId));
         
             if (request.PaginationFilter.Limit == 0)
             {

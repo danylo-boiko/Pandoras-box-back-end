@@ -13,22 +13,22 @@ public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, Exe
     {
         _videosDbContext = videosDbContext ?? throw new ArgumentNullException(nameof(videosDbContext));
     }
-    
+
     public async Task<ExecutionResult> Handle(DeleteVideoCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            if (await _videosDbContext.Videos.FirstOrDefaultAsync(v=>v.Id.Equals(request.Id)) is null)
+            if (await _videosDbContext.Videos.FirstOrDefaultAsync(v => v.Id.Equals(request.Id)) is null)
             {
                 return new ExecutionResult(new ErrorInfo($"Video with id: {request.Id} is not exist."));
             }
-            
+
             var existVideo = await _videosDbContext.Videos.FindAsync(request.Id);
             _videosDbContext.Videos.Remove(existVideo);
             await _videosDbContext.SaveChangesAsync();
-            
+
             // todo delete file from storage via RabbitMQ
-            
+
             return new ExecutionResult(new ErrorInfo($"Video with id: {request.Id} has been deleted successfully."));
         }
         catch (Exception e)

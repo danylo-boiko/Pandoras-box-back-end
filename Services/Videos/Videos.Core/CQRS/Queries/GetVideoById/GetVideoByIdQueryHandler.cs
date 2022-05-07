@@ -19,7 +19,9 @@ public class GetVideoByIdQueryHandler : IRequestHandler<GetVideoByIdQuery, Execu
     {
         try
         {
-            var video = await _videosDbContext.Videos.FirstOrDefaultAsync(v => v.Id.Equals(request.Id));
+            var video = await _videosDbContext.Videos
+                .Include(v => v.VideoTags)
+                .FirstOrDefaultAsync(v => v.Id.Equals(request.Id));
 
             if (video is null)
             {

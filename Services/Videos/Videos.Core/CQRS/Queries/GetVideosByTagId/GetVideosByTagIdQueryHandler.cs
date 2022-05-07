@@ -19,7 +19,9 @@ public class GetVideosByTagIdQueryHandler : IRequestHandler<GetVideosByTagIdQuer
     {
         try
         {
-            var videos = _videosDbContext.Videos.Where(v => v.VideoTags.Any(vt => vt.TagId.Equals(request.TagId)));
+            var videos = _videosDbContext.Videos
+                .Include(v => v.VideoTags)
+                .Where(v => v.VideoTags.Any(vt => vt.TagId.Equals(request.TagId)));
 
             if (request.PaginationFilter.Limit == 0)
             {

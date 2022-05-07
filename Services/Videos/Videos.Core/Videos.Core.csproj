@@ -21,10 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="CQRS\Commands\UpdateVideo" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Protobuf Include="..\..\NSFW\NSFW.Grpc\protos\nsfw.proto">
             <Link>Protos\nswf.proto</Link>
             <Generator>MSBuild:Compile</Generator>
