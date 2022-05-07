@@ -53,7 +53,6 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
                         CreatedAt = DateTime.Now,
                         VideoUrl = saveVideoResponse.Locations.First()
                     };
-                    
                     _videosDbContext.Videos.Add(video);
                     await _videosDbContext.SaveChangesAsync();
 
@@ -64,7 +63,6 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
                             VideoId = video.Id,
                             TagId = tagId
                         };
-                        
                         _videosDbContext.VideoTags.Add(videoTag);
                         await _videosDbContext.SaveChangesAsync();
                     }

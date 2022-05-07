@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
         serviceCollection
             .AddEntityFrameworkSqlServer()
             .AddDbContext<TagsDbContext>(o => {
-                o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName));
+                o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName));
             });
 
         return serviceCollection;
@@ -47,12 +47,10 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
     
-    public static IServiceCollection AddUsersGrpcServer(this IServiceCollection serviceCollection, IConfiguration configuration)
+    public static IServiceCollection AddUsersGrpcServer(this IServiceCollection serviceCollection, string grpcUrl)
     {
-        serviceCollection.AddGrpcClient<UsersProtoService.UsersProtoServiceClient>(client =>
-        {
-            client.Address = new Uri(configuration["GrpcServers:Users"]);
-        });
+        serviceCollection.AddGrpcClient<UsersProtoService.UsersProtoServiceClient>
+            (client => client.Address = new Uri(grpcUrl));
         
         serviceCollection.AddScoped<UsersGrpcService>();
 

@@ -1,22 +1,17 @@
-﻿using EventBus.Messages.Events;
-using LS.Helpers.Hosting.API;
-using MassTransit;
+﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Videos.Core.Database;
-using ExecutionResult = LS.Helpers.Hosting.API.ExecutionResult;
 
 namespace Videos.Core.CQRS.Commands.DeleteVideo;
 
 public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, ExecutionResult>
 {
     private readonly VideosDbContext _videosDbContext;
-    private readonly IPublishEndpoint _publishEndpoint;
 
-    public DeleteVideoCommandHandler(VideosDbContext videosDbContext, IPublishEndpoint publishEndpoint)
+    public DeleteVideoCommandHandler(VideosDbContext videosDbContext)
     {
         _videosDbContext = videosDbContext ?? throw new ArgumentNullException(nameof(videosDbContext));
-        _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
     }
 
     public async Task<ExecutionResult> Handle(DeleteVideoCommand request, CancellationToken cancellationToken)
@@ -29,18 +24,11 @@ public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, Exe
             }
 
             var existVideo = await _videosDbContext.Videos.FindAsync(request.Id);
-
-            var eventMessage = new MediaFileDeleteEvent
-            {
-                AuthorId = existVideo.AuthorId,
-                FileLocation = existVideo.VideoUrl
-            };
-
-            await _publishEndpoint.Publish<MediaFileDeleteEvent>(eventMessage);
-            
             _videosDbContext.Videos.Remove(existVideo);
             await _videosDbContext.SaveChangesAsync();
-            
+
+            // todo delete file from storage via RabbitMQ
+
             return new ExecutionResult(new ErrorInfo($"Video with id: {request.Id} has been deleted successfully."));
         }
         catch (Exception e)

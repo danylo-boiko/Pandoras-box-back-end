@@ -17,11 +17,10 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddDataAccess(builder.Configuration)
     .AddMediatr()
-    .AddRabbitMQ(builder.Configuration)
-    .AddStorageGrpc(builder.Configuration)
-    .AddUsersGrpc(builder.Configuration)
-    .AddTagsGrpc(builder.Configuration)
-    .AddNsfwGrpc(builder.Configuration)
+    .AddStorageGrpc(builder.Configuration["GrpcServers:Storage"])
+    .AddUsersGrpc(builder.Configuration["GrpcServers:Users"])
+    .AddTagsGrpc(builder.Configuration["GrpcServers:Tags"])
+    .AddNsfwGrpc(builder.Configuration["GrpcServers:NsfwDetection"])
     .AddHealthCheck();
 
 var app = builder.Build();
