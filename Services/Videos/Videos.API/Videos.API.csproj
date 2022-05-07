@@ -8,19 +8,17 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.4" />
-        <PackageReference Include="Google.Protobuf" Version="3.20.1" />
-        <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+        <PackageReference Include="MediatR" Version="10.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Controllers" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Protobuf Include="..\..\NSFW\NSFW.Grpc\protos\nsfw.proto" GrpcServices="Client">
-            <Link>Protos\nswf.proto</Link>
-        </Protobuf>
     </ItemGroup>
     
     <ItemGroup>

@@ -1,7 +1,8 @@
 using Google.Protobuf;
+using Microsoft.AspNetCore.Http;
 using NsfwDetectionPb;
 
-namespace Videos.API.GrpcServices;
+namespace Videos.Core.GrpcServices;
 
 public class NsfwDetectionGrpcService
 {
@@ -14,6 +15,7 @@ public class NsfwDetectionGrpcService
 
     public async Task<VideoDetectionResponse> DetectFromVideo(IFormFile videoFile)
     {
+        //todo nsft gRPC client
         await using var stream = videoFile.OpenReadStream();
         var request = new DetectFromVideoRequest
         {

@@ -1,4 +1,5 @@
-﻿using Tags.Core.Models;
+﻿using Tags.Core.Database;
+using Tags.Core.Database.Entities;
 
 namespace Tags.Core.Repositories.Interfaces;
 

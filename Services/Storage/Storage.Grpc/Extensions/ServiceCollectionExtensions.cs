@@ -20,6 +20,7 @@ namespace Storage.Grpc.Extensions
 
             return serviceCollection;
         }
+        
         public static IServiceCollection AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<IStorageService, StorageService>();

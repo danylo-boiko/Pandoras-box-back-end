@@ -1,6 +1,6 @@
 ﻿using LS.Helpers.Hosting.API;
 using MediatR;
-using Tags.Core.Models;
+using Tags.Core.Database.Entities;
 
 namespace Tags.Core.CQRS.Queries.GetTagById;
 

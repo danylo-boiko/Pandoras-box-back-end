@@ -6,7 +6,7 @@ using Tags.Core.CQRS.Commands.DeleteTag;
 using Tags.Core.CQRS.Commands.UpdateTag;
 using Tags.Core.CQRS.Queries.GetTagById;
 using Tags.Core.CQRS.Queries.GetTagsByPattern;
-using Tags.Core.Models;
+using Tags.Core.Database;
 
 namespace Tags.API.Controllers;
 

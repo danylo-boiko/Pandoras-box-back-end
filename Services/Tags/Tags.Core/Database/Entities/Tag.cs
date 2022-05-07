@@ -1,4 +1,4 @@
-﻿namespace Tags.Core.Models;
+﻿namespace Tags.Core.Database.Entities;
 
 public class Tag
 {

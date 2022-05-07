@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Videos.API.GrpcServices;
-using Videos.Core.CQRS.Commands.CreateVideo;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Videos.API.Controllers;
 
@@ -8,17 +7,10 @@ namespace Videos.API.Controllers;
 [Route("api/v1.0/videos")]
 public class VideosController : Controller
 {
-    private readonly NsfwDetectionGrpcService _nsfwDetectionGrpcService;
+    private readonly IMediator _mediator;
 
-    public VideosController(NsfwDetectionGrpcService nsfwDetectionGrpcService)
+    public VideosController(IMediator mediator)
     {
-        _nsfwDetectionGrpcService = nsfwDetectionGrpcService;
-    }
-    
-    [HttpPost]
-    [RequestSizeLimit(104857600)]
-    public async Task<IActionResult> Create([FromForm]CreateVideoCommand command)
-    {
-        return Ok(await _nsfwDetectionGrpcService.DetectFromVideo(command.Video));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 }

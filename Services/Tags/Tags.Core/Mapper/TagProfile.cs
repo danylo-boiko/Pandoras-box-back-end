@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Tags.Core.CQRS.Commands.CreateTag;
 using Tags.Core.CQRS.Commands.UpdateTag;
-using Tags.Core.Models;
+using Tags.Core.Database.Entities;
 
 namespace Tags.Core.Mapper;
 

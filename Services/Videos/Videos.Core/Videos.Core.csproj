@@ -7,7 +7,32 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Google.Protobuf" Version="3.20.1" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.45.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="CQRS\Commands\CreateVideo" />
+      <Folder Include="CQRS\Commands\DeleteVideo" />
+      <Folder Include="CQRS\Commands\UpdateVideo" />
+      <Folder Include="CQRS\Queries\GetVideoById" />
+      <Folder Include="CQRS\Queries\GetVideosByTagId" />
+      <Folder Include="CQRS\Queries\GetVideosByUserId" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Protobuf Include="..\..\NSFW\NSFW.Grpc\protos\nsfw.proto">
+        <Link>Protos\nswf.proto</Link>
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
     </ItemGroup>
 
 </Project>

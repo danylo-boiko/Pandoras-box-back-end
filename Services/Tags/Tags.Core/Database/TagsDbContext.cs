@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tags.Core.Models;
+using Tags.Core.Database.Entities;
 
 namespace Tags.Core.Database;
 

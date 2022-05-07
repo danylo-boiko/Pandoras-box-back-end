@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tags.Core.Database;
-using Tags.Core.Models;
+using Tags.Core.Database.Entities;
 using Tags.Core.Repositories.Interfaces;
 
 namespace Tags.Core.Repositories;

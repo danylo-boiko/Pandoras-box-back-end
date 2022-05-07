@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using LS.Helpers.Hosting.API;
 using MediatR;
+using Tags.Core.Database.Entities;
 using Tags.Core.GrpcServices;
-using Tags.Core.Models;
 using Tags.Core.Repositories.Interfaces;
 
 namespace Tags.Core.CQRS.Commands.CreateTag;
