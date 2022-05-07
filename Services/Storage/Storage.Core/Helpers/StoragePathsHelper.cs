@@ -38,7 +38,7 @@
 
         private static string GetVideosPath()
         {
-            var imagesPath = GetImagesPath();
+            var imagesPath = GetMediaFilesPath();
             var avatarImagesDir = Path.Combine(imagesPath, StorageDirectories.Level2.Videos);
 
             if (!Directory.Exists(avatarImagesDir))
@@ -86,8 +86,7 @@
             }
             else if (os == OSPlatform.OSX)
             {
-                var username = Environment.GetEnvironmentVariable("USERNAME") ??
-                               Environment.GetEnvironmentVariable("USER");
+                var username = Environment.GetEnvironmentVariable("USERNAME") ?? Environment.GetEnvironmentVariable("USER");
                 homePath = GetStoragePathForOSX(username);
             }
             else if (os == OSPlatform.Windows)
@@ -98,7 +97,7 @@
             {
                 throw new ArgumentOutOfRangeException();
             }
-
+        
             var appDir = $"pandoras-box-{EnvironmentName.ToLower()}";
 
             var storageDir = Path.Combine(homePath, appDir);

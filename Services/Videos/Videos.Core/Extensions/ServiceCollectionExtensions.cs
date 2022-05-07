@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using MassTransit;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NsfwDetectionPb;
 using Tags.Grpc.Protos;
@@ -54,6 +56,17 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
         
+        return serviceCollection;
+    }
+    
+    public static IServiceCollection AddRabbitMQ(this IServiceCollection serviceCollection, IConfiguration configuration)
+    {
+        serviceCollection.AddMassTransit(config => {
+            config.UsingRabbitMq((ctx, cfg) => {
+                cfg.Host(configuration["EventBusSettings:HostAddress"]);
+            });
+        });
+
         return serviceCollection;
     }
 }

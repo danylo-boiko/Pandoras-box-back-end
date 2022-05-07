@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDataAccess(builder.Configuration)
     .AddCustomServices()
+    .AddRabbitMQ(builder.Configuration)
     .ConfigureCustomSettings(builder.Configuration)
     .AddGrpc()
     .AddServiceOptions<StorageGrpcService>(options => { options.MaxReceiveMessageSize = 100 * 1024 * 1024; });
