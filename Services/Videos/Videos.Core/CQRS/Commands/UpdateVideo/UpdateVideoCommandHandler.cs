@@ -25,7 +25,8 @@ public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, Exe
     {
         try
         {
-            var existVideo = await _videosDbContext.Videos.Include(v => v.VideoTags)
+            var existVideo = await _videosDbContext.Videos
+                .Include(v => v.VideoTags)
                 .FirstOrDefaultAsync(v => v.Id.Equals(request.Id));
 
             if (existVideo is null)
@@ -34,6 +35,7 @@ public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, Exe
             }
 
             var newVideoTags = new List<VideoTag>();
+            
             foreach (var tagId in request.TagsIds)
             {
                 await _tagsGrpcService.GetTagAsync(tagId);

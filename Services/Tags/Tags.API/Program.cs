@@ -15,7 +15,7 @@ builder.Services
     .AddMediatr()
     .AddAutoMapper()
     .AddFluentValidation()
-    .AddUsersGrpcServer(builder.Configuration["GrpcSettings:UsersUrl"])
+    .AddUsersGrpcServer(builder.Configuration)
     .AddHealthCheck();
 
 var app = builder.Build();

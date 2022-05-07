@@ -32,7 +32,6 @@ public class UpdateTagCommandHandler : IRequestHandler<UpdateTagCommand, Executi
             }
             
             var tagEntity = _mapper.Map<Tag>(request);
-
             await _tagsRepository.UpdateAsync(tagEntity);
 
             var updatedTag = await _tagsRepository.GetAsync(request.Id);

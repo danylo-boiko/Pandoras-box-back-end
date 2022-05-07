@@ -25,18 +25,18 @@ namespace Storage.Grpc.Services
             IUserStorageItemRepository userStorageItemRepository,
             StorageDbContext dbContext)
         {
-            _storageService = storageService;
-            _storageItemRepository = storageItemRepository;
-            _userStorageItemRepository = userStorageItemRepository;
-            _dbContext = dbContext;
+            _storageService = storageService ?? throw new ArgumentException(nameof(storageService));
+            _storageItemRepository = storageItemRepository ?? throw new ArgumentException(nameof(storageItemRepository));
+            _userStorageItemRepository = userStorageItemRepository ?? throw new ArgumentException(nameof(userStorageItemRepository));
+            _dbContext = dbContext ?? throw new ArgumentException(nameof(dbContext));
         }
 
         public override async Task<SaveMediaFilesResponse> SaveMediaFiles(IAsyncStreamReader<SaveMediaFilesRequest> requestStream, ServerCallContext context)
         {
             var faultyFilesNumbers = new List<int>();
             var uploadedFiles = new RepeatedField<string>();
-            var fileCounter = 0;
             var currentFilePath = string.Empty;
+            var fileCounter = 0;
 
             await foreach (var current in requestStream.ReadAllAsync())
             {
@@ -45,10 +45,7 @@ namespace Storage.Grpc.Services
                 {
                     fileCounter++;
 
-                    var fileBytes = current
-                        .FileBytes
-                        .ToByteArray();
-
+                    var fileBytes = current.FileBytes.ToByteArray();
                     var fileCategory = current.CategoryId;
 
                     var storageItem = await _storageService.SaveMediaFile(fileBytes, (FileCategory)fileCategory, current.Extension);
@@ -62,6 +59,7 @@ namespace Storage.Grpc.Services
                         StorageItemId = storageItem.Id,
                         UserId = current.UserId
                     };
+                    
                     await _userStorageItemRepository.Add(userStorageItem);
                     await transaction.CommitAsync();
                 }
@@ -104,6 +102,7 @@ namespace Storage.Grpc.Services
             }
 
             var bytes = await File.ReadAllBytesAsync(userStorageItem.StorageItem.Location);
+            
             return new GetUserCurrentAvatarDataResponse
             {
                 AvatarBytes = ByteString.CopyFrom(bytes),

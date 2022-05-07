@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EventBus.Messages.Consts;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Storage.Core.Database;
 using Storage.Core.Repositories.StorageItem;
 using Storage.Core.Repositories.UserStorageItem;
+using Storage.Grpc.EventBusConsumers;
 
 namespace Storage.Grpc.Extensions
 {
@@ -14,13 +17,35 @@ namespace Storage.Grpc.Extensions
         {
             serviceCollection
                 .AddEntityFrameworkSqlServer()
-                .AddDbContext<StorageDbContext>(o => {
-                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
+                .AddDbContext<StorageDbContext>(o =>
+                {
+                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"),
+                        c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
                 });
 
             return serviceCollection;
         }
-        
+
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection serviceCollection, IConfiguration configuration)
+        {
+            serviceCollection.AddMassTransit(config =>
+            {
+                config.AddConsumer<MediaFileDeleteConsumer>();
+
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(configuration["EventBusSettings:HostAddress"]);
+                    
+                    cfg.ReceiveEndpoint(EventBusConstants.MediaFilesDeletingQueue, c =>
+                    {
+                        c.ConfigureConsumer<MediaFileDeleteConsumer>(ctx);
+                    });
+                });
+            });
+            
+            return serviceCollection;
+        }
+
         public static IServiceCollection AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<IStorageService, StorageService>();
@@ -30,7 +55,7 @@ namespace Storage.Grpc.Extensions
             return services;
         }
 
-        public static IServiceCollection ConfigureCustomSettings(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureCustomSettings(this IServiceCollection services,IConfiguration configuration)
         {
             services.Configure<FileHashingSettings>(configuration.GetSection("FileHashingOptions"));
 
