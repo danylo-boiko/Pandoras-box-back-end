@@ -9,7 +9,7 @@ builder.Services
     .AddMediatr()
     .AddAutoMapper()
     .AddFluentValidation()
-    .AddUsersGrpcServer(builder.Configuration["GrpcSettings:UsersUrl"])
+    .AddUsersGrpcServer(builder.Configuration)
     .AddGrpc();
 
 var app = builder.Build();

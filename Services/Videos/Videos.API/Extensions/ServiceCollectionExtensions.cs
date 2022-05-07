@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
         serviceCollection
             .AddEntityFrameworkSqlServer()
             .AddDbContext<VideosDbContext>(o => {
-                o.UseSqlServer(configuration.GetConnectionString("SqlServer"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
+                o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
             });
 
         return serviceCollection;

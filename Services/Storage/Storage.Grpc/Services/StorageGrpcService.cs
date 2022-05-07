@@ -59,6 +59,7 @@ namespace Storage.Grpc.Services
                         StorageItemId = storageItem.Id,
                         UserId = current.UserId
                     };
+                    
                     await _userStorageItemRepository.Add(userStorageItem);
                     await transaction.CommitAsync();
                 }
@@ -101,6 +102,7 @@ namespace Storage.Grpc.Services
             }
 
             var bytes = await File.ReadAllBytesAsync(userStorageItem.StorageItem.Location);
+            
             return new GetUserCurrentAvatarDataResponse
             {
                 AvatarBytes = ByteString.CopyFrom(bytes),

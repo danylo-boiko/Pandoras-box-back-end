@@ -29,10 +29,7 @@ public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, Executi
                 return new ExecutionResult<Tag>(new ErrorInfo($"Tag with content: {request.Content} already exist."));
             }
 
-            if (await _usersGrpcService.GetUserAsync(request.AuthorId) is null)
-            {
-                return new ExecutionResult<Tag>(new ErrorInfo($"Author with id: {request.AuthorId} is not exist."));
-            }
+            await _usersGrpcService.GetUserAsync(request.AuthorId);
             
             var tagEntity = _mapper.Map<Tag>(request);
             

@@ -12,40 +12,48 @@ namespace Videos.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddStorageGrpc(this IServiceCollection serviceCollection, string grpcUrl)
+    public static IServiceCollection AddStorageGrpc(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddGrpcClient<Storage.Grpc.Storage.StorageClient>
-            (client => client.Address = new Uri(grpcUrl));
+        serviceCollection.AddGrpcClient<Storage.Grpc.Storage.StorageClient>(client => 
+        {
+            client.Address = new Uri(configuration["GrpcServers:Storage"]);
+        });
         
         serviceCollection.AddScoped<StorageGrpcService>();
 
         return serviceCollection;
     }
     
-    public static IServiceCollection AddUsersGrpc(this IServiceCollection serviceCollection, string grpcUrl)
+    public static IServiceCollection AddUsersGrpc(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddGrpcClient<UsersProtoService.UsersProtoServiceClient>
-            (client => client.Address = new Uri(grpcUrl));
+        serviceCollection.AddGrpcClient<UsersProtoService.UsersProtoServiceClient>(client => 
+        {
+            client.Address = new Uri(configuration["GrpcServers:Users"]);
+        });
         
         serviceCollection.AddScoped<UsersGrpcService>();
 
         return serviceCollection;
     }
     
-    public static IServiceCollection AddTagsGrpc(this IServiceCollection serviceCollection, string grpcUrl)
+    public static IServiceCollection AddTagsGrpc(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddGrpcClient<TagsProtoService.TagsProtoServiceClient>
-            (client => client.Address = new Uri(grpcUrl));
+        serviceCollection.AddGrpcClient<TagsProtoService.TagsProtoServiceClient>(client => 
+        {
+            client.Address = new Uri(configuration["GrpcServers:Tags"]);
+        });
         
         serviceCollection.AddScoped<TagsGrpcService>();
 
         return serviceCollection;
     }
     
-    public static IServiceCollection AddNsfwGrpc(this IServiceCollection serviceCollection, string grpcUrl)
+    public static IServiceCollection AddNsfwGrpc(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddGrpcClient<NsfwDetectionProtoService.NsfwDetectionProtoServiceClient>
-            (client => client.Address = new Uri(grpcUrl));
+        serviceCollection.AddGrpcClient<NsfwDetectionProtoService.NsfwDetectionProtoServiceClient>(client => 
+        {
+            client.Address = new Uri(configuration["GrpcServers:NsfwDetection"]);
+        });
         
         serviceCollection.AddScoped<NsfwDetectionGrpcService>();
 
