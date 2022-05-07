@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Storage.Core.Database;
 using Storage.Core.Database.Entities;
 using Storage.Core.Enums;
@@ -33,6 +34,7 @@ namespace Storage.Grpc.Services
         public override async Task<SaveMediaFilesResponse> SaveMediaFiles(IAsyncStreamReader<SaveMediaFilesRequest> requestStream, ServerCallContext context)
         {
             var faultyFilesNumbers = new List<int>();
+            var uploadedFiles = new RepeatedField<string>();
             var fileCounter = 0;
             var currentFilePath = string.Empty;
 
@@ -51,7 +53,8 @@ namespace Storage.Grpc.Services
 
                     var storageItem = await _storageService.SaveMediaFile(fileBytes, (FileCategory)fileCategory, current.Extension);
                     currentFilePath = storageItem.Location;
-
+                    uploadedFiles.Add(currentFilePath);
+                    
                     await _storageItemRepository.Add(storageItem);
 
                     var userStorageItem = new UserStorageItem
@@ -66,6 +69,7 @@ namespace Storage.Grpc.Services
                 {
                     await transaction.RollbackAsync();
                     File.Delete(currentFilePath);
+                    uploadedFiles.Remove(currentFilePath);
                     faultyFilesNumbers.Add(fileCounter);
                 }
             }
@@ -84,7 +88,7 @@ namespace Storage.Grpc.Services
                 }
             }
             var message = isSuccess ? string.Empty : $"Could not upload files: {builder}";
-            return new SaveMediaFilesResponse { IsSuccess = isSuccess, Message = message};
+            return new SaveMediaFilesResponse { IsSuccess = isSuccess, Locations = {uploadedFiles}, Message = message};
         }
 
         public override async Task<GetUserCurrentAvatarDataResponse> GetUserCurrentAvatarData(GetUserCurrentAvatarDataRequest request, ServerCallContext context)

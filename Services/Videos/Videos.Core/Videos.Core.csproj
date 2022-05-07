@@ -7,7 +7,40 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+        <PackageReference Include="Google.Protobuf" Version="3.20.1" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.45.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="LS.Helpers.Hosting" Version="5.0.3" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="..\..\NSFW\NSFW.Grpc\protos\nsfw.proto">
+            <Link>Protos\nswf.proto</Link>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="..\..\Storage\Storage.Grpc\protos\storage.proto">
+            <Link>Protos\storage.proto</Link>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="..\..\Users\Users.Grpc\protos\users.proto">
+            <Link>Protos\users.proto</Link>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="..\..\Tags\Tags.Grpc\protos\tags.proto">
+            <Link>Protos\tags.proto</Link>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Users\Users.Core\Users.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -69,8 +69,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
 
-    public static IServiceCollection AddConfigurations(this IServiceCollection serviceCollection,
-        IConfiguration configuration)
+    public static IServiceCollection AddConfigurations(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         serviceCollection.Configure<GoogleSmtpCredentials>(configuration.GetSection(nameof(GoogleSmtpCredentials)));
         serviceCollection.Configure<StorageServiceOptions>(configuration.GetSection(nameof(StorageServiceOptions)));
@@ -88,7 +87,8 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddHealthCheck(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddHealthChecks()
+        serviceCollection
+            .AddHealthChecks()
             .AddCheck("Users API", () => HealthCheckResult.Healthy())
             .AddDbContextCheck<UsersDbContext>("Users MSSQL Server");
 

@@ -24,7 +24,8 @@ namespace Storage.Core.Database
         {
             base.ConfigureConventions(configurationBuilder);
 
-            configurationBuilder.Properties<string>()
+            configurationBuilder
+                .Properties<string>()
                 .HaveMaxLength(250);
         }
     }

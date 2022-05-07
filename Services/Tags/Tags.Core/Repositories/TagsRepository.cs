@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tags.Core.Database;
-using Tags.Core.Models;
+using Tags.Core.Database.Entities;
 using Tags.Core.Repositories.Interfaces;
 
 namespace Tags.Core.Repositories;
@@ -22,6 +22,18 @@ public class TagsRepository : ITagsRepository
     public async Task<Tag?> GetAsync(string tagContent)
     {
         return await _context.Tags.FirstOrDefaultAsync(t=>t.Content.Equals(tagContent));
+    }
+
+    public async Task<IList<Tag>> GetAsync(string pattern, PaginationFilter paginationFilter)
+    {
+        var tags = _context.Tags.Where(t => t.Content.Contains(pattern));
+        
+        if (paginationFilter.Limit == 0)
+        {
+            return await tags.Skip(paginationFilter.Offset).ToListAsync();
+        }
+            
+        return await tags.Skip(paginationFilter.Offset).Take(paginationFilter.Limit).ToListAsync();
     }
 
     public async Task<bool> CreateAsync(Tag tag)

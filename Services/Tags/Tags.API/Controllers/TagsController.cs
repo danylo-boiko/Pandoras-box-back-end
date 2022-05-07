@@ -5,6 +5,8 @@ using Tags.Core.CQRS.Commands.CreateTag;
 using Tags.Core.CQRS.Commands.DeleteTag;
 using Tags.Core.CQRS.Commands.UpdateTag;
 using Tags.Core.CQRS.Queries.GetTagById;
+using Tags.Core.CQRS.Queries.GetTagsByPattern;
+using Tags.Core.Database;
 
 namespace Tags.API.Controllers;
 
@@ -29,6 +31,18 @@ public class TagsController : Controller
         
         return this.FromExecutionResult(result);
     }
+    
+    [HttpGet("pattern/{pattern}")]
+    public async Task<IActionResult> Get([FromRoute] string pattern, [FromQuery]PaginationFilter paginationFilter)
+    {
+        var result = await _mediator.Send(new GetTagsByPatternQuery
+        {
+            Pattern = pattern,
+            PaginationFilter = paginationFilter
+        });
+        
+        return this.FromExecutionResult(result);
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTagCommand command)
@@ -39,7 +53,7 @@ public class TagsController : Controller
     }
     
     [HttpPut]
-    public async Task<IActionResult> Create([FromBody] UpdateTagCommand command)
+    public async Task<IActionResult> Update([FromBody] UpdateTagCommand command)
     {
         var result = await _mediator.Send(command);
         

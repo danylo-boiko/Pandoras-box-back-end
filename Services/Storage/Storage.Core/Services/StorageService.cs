@@ -14,8 +14,7 @@ namespace Storage.Core.Services
     {
         private readonly IOptions<FileHashingSettings> _fileHashingOptions;
 
-        public StorageService(
-            IOptions<FileHashingSettings> fileHashingOptions)
+        public StorageService(IOptions<FileHashingSettings> fileHashingOptions)
         {
             _fileHashingOptions = fileHashingOptions;
         }

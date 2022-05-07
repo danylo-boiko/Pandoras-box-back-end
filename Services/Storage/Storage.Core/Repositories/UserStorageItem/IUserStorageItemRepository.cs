@@ -6,7 +6,6 @@ namespace Storage.Core.Repositories.UserStorageItem
     {
         Task Add(Database.Entities.UserStorageItem item);
 
-        Task<Database.Entities.UserStorageItem?> GetByUserId(int userId,
-            FileCategory storageItemCategory = FileCategory.Avatar);
+        Task<Database.Entities.UserStorageItem?> GetByUserId(int userId, FileCategory storageItemCategory = FileCategory.Avatar);
     }
 }
