@@ -1,4 +1,5 @@
-﻿using LS.Helpers.Hosting.API;
+﻿using Grpc.Core;
+using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Videos.Core.Database;
@@ -34,28 +35,36 @@ public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, Exe
                 return new ExecutionResult<Video>(new ErrorInfo($"Video with id: {request.Id} is not exist."));
             }
 
-            var newVideoTags = new List<VideoTag>();
-            
-            foreach (var tagId in request.TagsIds)
-            {
-                await _tagsGrpcService.GetTagAsync(tagId);
-                newVideoTags.Add(new VideoTag
-                {
-                    TagId = tagId,
-                    VideoId = request.Id
-                });
-            }
-
             if (request.Description is not null)
             {
                 existVideo.Description = request.Description;
             }
 
-            existVideo.VideoTags.Clear();
-            newVideoTags.ForEach(vt => existVideo.VideoTags.Add(vt));
+            if (request.TagsIds is not null)
+            {
+                var newVideoTags = new List<VideoTag>();
+            
+                foreach (var tagId in request.TagsIds)
+                {
+                    await _tagsGrpcService.GetTagAsync(tagId);
+                    newVideoTags.Add(new VideoTag
+                    {
+                        TagId = tagId,
+                        VideoId = request.Id
+                    });
+                }
+
+                existVideo.VideoTags.Clear();
+                newVideoTags.ForEach(vt => existVideo.VideoTags.Add(vt));
+            }
+            
             await _videosDbContext.SaveChangesAsync();
 
             return new ExecutionResult<Video>(new InfoMessage("Video has been updated successfully."));
+        }
+        catch (RpcException e)
+        {
+            return new ExecutionResult<Video>(new ErrorInfo("gRPC server error.", e.Status.Detail));
         }
         catch (Exception e)
         {

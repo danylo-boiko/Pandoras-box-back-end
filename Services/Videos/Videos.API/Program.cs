@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddDataAccess(builder.Configuration)
     .AddMediatr()
+    .AddFluentValidationValidators()
     .AddRabbitMQ(builder.Configuration)
     .AddStorageGrpc(builder.Configuration)
     .AddUsersGrpc(builder.Configuration)

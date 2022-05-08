@@ -1,13 +1,10 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Users.Core.Configurations;
 using Users.Core.Database;
 using Users.Core.Database.Entities.Identity;
-using Users.Core.Repositories;
-using Users.Core.Repositories.Interfaces;
 using Users.Core.Services.Email;
 using Users.Core.Services.User;
 

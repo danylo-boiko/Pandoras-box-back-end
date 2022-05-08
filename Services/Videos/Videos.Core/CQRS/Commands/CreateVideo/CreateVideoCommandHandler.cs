@@ -92,6 +92,10 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
             }
             return new ExecutionResult<Video>(errorsInfo);
         }
+        catch (RpcException e)
+        {
+            return new ExecutionResult<Video>(new ErrorInfo("gRPC server error.", e.Status.Detail));
+        }
         catch (Exception e)
         {
             return new ExecutionResult<Video>(new ErrorInfo($"Error while uploading a new video. {e.Message}"));
