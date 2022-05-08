@@ -1,3 +1,4 @@
+using Calzolari.Grpc.AspNetCore.Validation;
 using Storage.Grpc.Extensions;
 using Storage.Grpc.Services;
 
@@ -8,7 +9,8 @@ builder.Services
     .AddRabbitMQ(builder.Configuration)
     .ConfigureCustomSettings(builder.Configuration)
     .AddCustomServices()
-    .AddGrpc()
+    .AddFluentValidation()
+    .AddGrpc(options => options.EnableMessageValidation())
     .AddServiceOptions<StorageGrpcService>(options => { options.MaxReceiveMessageSize = 100 * 1024 * 1024; });
 
 var app = builder.Build();

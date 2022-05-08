@@ -1,10 +1,12 @@
-﻿using EventBus.Messages.Consts;
+﻿using Calzolari.Grpc.AspNetCore.Validation;
+using EventBus.Messages.Consts;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Storage.Core.Database;
 using Storage.Core.Repositories.StorageItem;
 using Storage.Core.Repositories.UserStorageItem;
 using Storage.Grpc.EventBusConsumers;
+using Storage.Grpc.Validation;
 
 namespace Storage.Grpc.Extensions
 {
@@ -52,6 +54,15 @@ namespace Storage.Grpc.Extensions
             services.AddScoped<IStorageItemRepository, StorageItemRepository>();
             services.AddScoped<IUserStorageItemRepository, UserStorageItemRepository>();
 
+            return services;
+        }
+        
+        public static IServiceCollection AddFluentValidation(this IServiceCollection services)
+        {
+            services.AddValidator<SaveMediaFilesRequestValidator>();
+
+            services.AddGrpcValidation();
+            
             return services;
         }
 
