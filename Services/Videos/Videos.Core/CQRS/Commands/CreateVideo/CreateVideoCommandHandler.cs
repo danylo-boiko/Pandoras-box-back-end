@@ -1,4 +1,6 @@
-﻿using LS.Helpers.Hosting.API;
+﻿using Calzolari.Grpc.Net.Client.Validation;
+using Grpc.Core;
+using LS.Helpers.Hosting.API;
 using MediatR;
 using Videos.Core.Database;
 using Videos.Core.Database.Entities;
@@ -80,6 +82,19 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
             return saveVideoResponse.IsSuccess
                 ? new ExecutionResult<Video>(new InfoMessage("Video has been uploaded successfully."))
                 : new ExecutionResult<Video>(new ErrorInfo(saveVideoResponse.Message));
+        }
+        catch (RpcException e) when (e.StatusCode == StatusCode.InvalidArgument)
+        {
+            var errorsInfo = new List<ErrorInfo>();
+            foreach (var error in e.GetValidationErrors())
+            {
+                errorsInfo.Add(new ErrorInfo(error.PropertyName, error.ErrorMessage));
+            }
+            return new ExecutionResult<Video>(errorsInfo);
+        }
+        catch (RpcException e)
+        {
+            return new ExecutionResult<Video>(new ErrorInfo("gRPC server error.", e.Status.Detail));
         }
         catch (Exception e)
         {

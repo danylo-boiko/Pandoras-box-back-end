@@ -14,7 +14,7 @@ builder.Services
     .AddRepositories()
     .AddMediatr()
     .AddAutoMapper()
-    .AddFluentValidation()
+    .AddFluentValidationValidators()
     .AddUsersGrpcServer(builder.Configuration)
     .AddHealthCheck();
 

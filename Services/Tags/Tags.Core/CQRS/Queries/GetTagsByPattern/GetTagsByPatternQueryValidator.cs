@@ -2,9 +2,9 @@
 
 namespace Tags.Core.CQRS.Queries.GetTagsByPattern;
 
-public class GetTagsByPatternValidator : AbstractValidator<GetTagsByPatternQuery>
+public class GetTagsByPatternQueryValidator : AbstractValidator<GetTagsByPatternQuery>
 {
-    public GetTagsByPatternValidator()
+    public GetTagsByPatternQueryValidator()
     {
         RuleFor(t => t.Pattern)
             .NotEmpty().WithMessage("{Content} is required.");

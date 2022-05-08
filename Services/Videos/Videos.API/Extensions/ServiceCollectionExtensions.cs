@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Videos.Core.CQRS.Commands.CreateVideo;
+using Videos.Core.CQRS.Commands.UpdateVideo;
 using Videos.Core.Database;
 
 namespace Videos.API.Extensions;
@@ -23,6 +27,16 @@ public static class ServiceCollectionExtensions
                 o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
             });
 
+        return serviceCollection;
+    }
+    
+    public static IServiceCollection AddFluentValidationValidators(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddValidatorsFromAssemblyContaining<CreateVideoCommandValidator>();
+        serviceCollection.AddValidatorsFromAssemblyContaining<UpdateVideoCommandValidator>();
+
+        serviceCollection.AddFluentValidation();
+        
         return serviceCollection;
     }
 }

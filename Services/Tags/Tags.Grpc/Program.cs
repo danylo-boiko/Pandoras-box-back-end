@@ -8,7 +8,6 @@ builder.Services
     .AddRepositories()
     .AddMediatr()
     .AddAutoMapper()
-    .AddFluentValidation()
     .AddUsersGrpcServer(builder.Configuration)
     .AddGrpc();
 

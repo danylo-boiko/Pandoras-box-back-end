@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tags.Core.Behaviours;
 using Tags.Core.Database;
 using Tags.Core.GrpcServices;
 using Tags.Core.Protos;
@@ -55,15 +53,6 @@ public static class ServiceCollectionExtensions
         });
         
         serviceCollection.AddScoped<UsersGrpcService>();
-
-        return serviceCollection;
-    }
-
-    public static IServiceCollection AddFluentValidation(this IServiceCollection serviceCollection)
-    {
-        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
-        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
         return serviceCollection;
     }

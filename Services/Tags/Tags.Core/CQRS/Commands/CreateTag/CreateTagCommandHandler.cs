@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Grpc.Core;
 using LS.Helpers.Hosting.API;
 using MediatR;
 using Tags.Core.Database.Entities;
@@ -36,6 +37,10 @@ public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, Executi
             await _tagsRepository.CreateAsync(tagEntity);
             
             return new ExecutionResult<Tag>(tagEntity);
+        }
+        catch (RpcException e)
+        {
+            return new ExecutionResult<Tag>(new ErrorInfo("gRPC server error.",e.Status.Detail));
         }
         catch (Exception e)
         {
