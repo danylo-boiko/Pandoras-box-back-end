@@ -36,7 +36,6 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
     {
         try
         {
-            int videoId = 0;
             await _usersGrpcService.GetUserAsync(request.AuthorId);
 
             foreach (var tagId in request.TagsIds)
@@ -44,40 +43,34 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
                 await _tagsGrpcService.GetTagAsync(tagId);
             }
 
-            //todo NSFW detection for new video
-
             var saveVideoResponse = await _storageGrpcService.SaveVideo(request.AuthorId, request.Video);
 
+            var video = new Video
+            {
+                AuthorId = request.AuthorId,
+                Description = request.Description,
+                CreatedAt = DateTime.Now,
+                VideoUrl = saveVideoResponse.Locations.First()
+            };
+            
             if (saveVideoResponse.IsSuccess)
             {
                 await using var transaction = await _videosDbContext.Database.BeginTransactionAsync();
-                
                 try
                 {
-                    var video = new Video
-                    {
-                        AuthorId = request.AuthorId,
-                        Description = request.Description,
-                        CreatedAt = DateTime.Now,
-                        VideoUrl = saveVideoResponse.Locations.First()
-                    };
-
                     _videosDbContext.Videos.Add(video);
                     await _videosDbContext.SaveChangesAsync();
-                    videoId = video.Id;
                     
                     foreach (var tagId in request.TagsIds)
                     {
-                        var videoTag = new VideoTag
+                        _videosDbContext.VideoTags.Add(new VideoTag
                         {
                             VideoId = video.Id,
                             TagId = tagId
-                        };
-
-                        _videosDbContext.VideoTags.Add(videoTag);
-                        await _videosDbContext.SaveChangesAsync();
+                        });
                     }
 
+                    await _videosDbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
                 catch (Exception e)
@@ -88,8 +81,8 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
 
             if (saveVideoResponse.IsSuccess)
             {
-                _logger.LogInformation("Video has been uploaded successfully, id {Id}", videoId);
-                return new ExecutionResult<Video>(new InfoMessage($"Video has been uploaded successfully, id {videoId}."));
+                _logger.LogInformation("Video has been uploaded successfully, id {Id}", video.Id);
+                return new ExecutionResult<Video>(new InfoMessage($"Video has been uploaded successfully, id {video.Id}."));
             }
 
             return new ExecutionResult<Video>(new ErrorInfo(saveVideoResponse.Message));
@@ -101,6 +94,7 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
                 var errorsInfo = new List<ErrorInfo>();
                 foreach (var error in e.GetValidationErrors())
                 {
+                    _logger.LogError("Grpc validation error: {Error}", error.ErrorMessage);
                     errorsInfo.Add(new ErrorInfo(error.PropertyName, error.ErrorMessage));
                 }
 
