@@ -3,7 +3,6 @@ using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NsfwDetectionPb;
 using Tags.Grpc.Protos;
 using Users.Grpc.Protos;
 using Videos.Core.GrpcServices;
@@ -47,19 +46,7 @@ public static class ServiceCollectionExtensions
 
         return serviceCollection;
     }
-    
-    public static IServiceCollection AddNsfwGrpc(this IServiceCollection serviceCollection, IConfiguration configuration)
-    {
-        serviceCollection.AddGrpcClient<NsfwDetectionProtoService.NsfwDetectionProtoServiceClient>(client => 
-        {
-            client.Address = new Uri(configuration["GrpcServers:NsfwDetection"]);
-        });
-        
-        serviceCollection.AddScoped<NsfwDetectionGrpcService>();
 
-        return serviceCollection;
-    }
-    
     public static IServiceCollection AddMediatr(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
