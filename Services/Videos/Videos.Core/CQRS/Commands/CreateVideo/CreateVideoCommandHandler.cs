@@ -1,10 +1,13 @@
 ﻿using Calzolari.Grpc.Net.Client.Validation;
+using EventBus.Messages.Events;
 using Grpc.Core;
 using LS.Helpers.Hosting.API;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Videos.Core.Database;
 using Videos.Core.Database.Entities;
+using Videos.Core.Enums;
 using Videos.Core.GrpcServices;
 
 namespace Videos.Core.CQRS.Commands.CreateVideo;
@@ -12,6 +15,7 @@ namespace Videos.Core.CQRS.Commands.CreateVideo;
 public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, ExecutionResult<Video>>
 {
     private readonly ILogger<CreateVideoCommandHandler> _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
     private readonly StorageGrpcService _storageGrpcService;
     private readonly UsersGrpcService _usersGrpcService;
     private readonly TagsGrpcService _tagsGrpcService;
@@ -19,6 +23,7 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
 
     public CreateVideoCommandHandler(
         ILogger<CreateVideoCommandHandler> logger,
+        IPublishEndpoint publishEndpoint,
         StorageGrpcService storageGrpcService,
         UsersGrpcService usersGrpcService,
         TagsGrpcService tagsGrpcService,
@@ -26,6 +31,7 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
     )
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
         _storageGrpcService = storageGrpcService ?? throw new ArgumentNullException(nameof(storageGrpcService));
         _usersGrpcService = usersGrpcService ?? throw new ArgumentNullException(nameof(usersGrpcService));
         _tagsGrpcService = tagsGrpcService ?? throw new ArgumentNullException(nameof(tagsGrpcService));
@@ -48,9 +54,10 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
             var video = new Video
             {
                 AuthorId = request.AuthorId,
+                VideoUrl = saveVideoResponse.Locations.First(),
+                ClassificationStatus = ClassificationStatus.UnReviewed,
                 Description = request.Description,
-                CreatedAt = DateTime.Now,
-                VideoUrl = saveVideoResponse.Locations.First()
+                CreatedAt = DateTime.Now
             };
             
             if (saveVideoResponse.IsSuccess)
@@ -81,6 +88,15 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
 
             if (saveVideoResponse.IsSuccess)
             {
+                var detectionEvent = new NsfwVideoDetectionEvent
+                {
+                    VideoId = video.Id,
+                    AuthorId = video.AuthorId,
+                    VideoLocation = video.VideoUrl
+                };
+                
+                await _publishEndpoint.Publish<NsfwVideoDetectionEvent>(detectionEvent);
+                
                 _logger.LogInformation("Video has been uploaded successfully, id {Id}", video.Id);
                 return new ExecutionResult<Video>(new InfoMessage($"Video has been uploaded successfully, id {video.Id}."));
             }

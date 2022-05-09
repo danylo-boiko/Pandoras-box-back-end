@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Videos.Core.Database;
 
@@ -11,9 +12,10 @@ using Videos.Core.Database;
 namespace Videos.API.Migrations
 {
     [DbContext(typeof(VideosDbContext))]
-    partial class VideosDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220509225504_AddClassificationStatusField")]
+    partial class AddClassificationStatusField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
