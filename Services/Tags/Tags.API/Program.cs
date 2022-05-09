@@ -1,9 +1,13 @@
+using Common.Logging;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 using Tags.API.Extensions;
 using Tags.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

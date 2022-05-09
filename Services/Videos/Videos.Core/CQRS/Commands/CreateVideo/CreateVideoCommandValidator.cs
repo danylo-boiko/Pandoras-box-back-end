@@ -4,8 +4,14 @@ namespace Videos.Core.CQRS.Commands.CreateVideo;
 
 public class CreateVideoCommandValidator : AbstractValidator<CreateVideoCommand>
 {
+    private readonly string[] _validVideoExtensions = { ".mp4", ".wmv", ".mov", ".avi", ".webm" };
+
     public CreateVideoCommandValidator()
     {
+        RuleFor(v => v.Video)
+            .Must(v => _validVideoExtensions.Contains(Path.GetExtension(v.FileName)))
+            .WithMessage("Unsupported video format.");
+        
         RuleFor(v => v.AuthorId)
             .NotEmpty();
 

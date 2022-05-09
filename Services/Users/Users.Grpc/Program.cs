@@ -1,7 +1,11 @@
+using Common.Logging;
+using Serilog;
 using Users.Grpc.Extensions;
 using Users.Grpc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services
     .AddAutoMapper()

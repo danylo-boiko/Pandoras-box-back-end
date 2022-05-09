@@ -1,13 +1,17 @@
 using System.Reflection;
+using Common.Logging;
 using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using Users.API.Extensions;
 using Users.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

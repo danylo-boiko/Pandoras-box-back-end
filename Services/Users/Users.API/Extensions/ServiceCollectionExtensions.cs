@@ -14,11 +14,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection
-            .AddEntityFrameworkSqlServer()
-            .AddDbContext<UsersDbContext>(o => {
-                o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
-            });
+        serviceCollection.AddDbContext<UsersDbContext>(o => {
+            o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
+        });
 
         return serviceCollection;
     }
