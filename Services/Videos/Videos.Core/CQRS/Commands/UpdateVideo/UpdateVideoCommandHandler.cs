@@ -2,6 +2,7 @@
 using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Videos.Core.Database;
 using Videos.Core.Database.Entities;
 using Videos.Core.GrpcServices;
@@ -10,14 +11,16 @@ namespace Videos.Core.CQRS.Commands.UpdateVideo;
 
 public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, ExecutionResult<Video>>
 {
+    private readonly ILogger<UpdateVideoCommandHandler> _logger;
     private readonly TagsGrpcService _tagsGrpcService;
     private readonly VideosDbContext _videosDbContext;
 
     public UpdateVideoCommandHandler(
-        TagsGrpcService tagsGrpcService,
-        VideosDbContext videosDbContext
-    )
+        ILogger<UpdateVideoCommandHandler> logger, 
+        TagsGrpcService tagsGrpcService, 
+        VideosDbContext videosDbContext)
     {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _tagsGrpcService = tagsGrpcService ?? throw new ArgumentNullException(nameof(tagsGrpcService));
         _videosDbContext = videosDbContext ?? throw new ArgumentNullException(nameof(videosDbContext));
     }
@@ -32,6 +35,7 @@ public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, Exe
 
             if (existVideo is null)
             {
+                _logger.LogError("Video with id: {Id} is not exist", request.Id);
                 return new ExecutionResult<Video>(new ErrorInfo($"Video with id: {request.Id} is not exist."));
             }
 
@@ -59,8 +63,9 @@ public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, Exe
             }
             
             await _videosDbContext.SaveChangesAsync();
-
-            return new ExecutionResult<Video>(new InfoMessage("Video has been updated successfully."));
+            
+            _logger.LogInformation("Video with id: {Id} has been successfully updated", request.Id);
+            return new ExecutionResult<Video>(new InfoMessage($"Video with id: {request.Id} has been updated successfully."));
         }
         catch (RpcException e)
         {

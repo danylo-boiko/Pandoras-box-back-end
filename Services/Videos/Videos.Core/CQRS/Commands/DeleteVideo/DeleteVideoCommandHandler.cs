@@ -3,6 +3,7 @@ using LS.Helpers.Hosting.API;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Videos.Core.Database;
 using ExecutionResult = LS.Helpers.Hosting.API.ExecutionResult;
 
@@ -10,11 +11,16 @@ namespace Videos.Core.CQRS.Commands.DeleteVideo;
 
 public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, ExecutionResult>
 {
+    private readonly ILogger<DeleteVideoCommandHandler> _logger;
     private readonly VideosDbContext _videosDbContext;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public DeleteVideoCommandHandler(VideosDbContext videosDbContext, IPublishEndpoint publishEndpoint)
+    public DeleteVideoCommandHandler(
+        ILogger<DeleteVideoCommandHandler> logger, 
+        VideosDbContext videosDbContext, 
+        IPublishEndpoint publishEndpoint)
     {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _videosDbContext = videosDbContext ?? throw new ArgumentNullException(nameof(videosDbContext));
         _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
     }
@@ -25,6 +31,7 @@ public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, Exe
         {
             if (await _videosDbContext.Videos.FirstOrDefaultAsync(v => v.Id.Equals(request.Id)) is null)
             {
+                _logger.LogError("Video with id: {Id} is not exist", request.Id);
                 return new ExecutionResult(new ErrorInfo($"Video with id: {request.Id} is not exist."));
             }
 
@@ -41,6 +48,7 @@ public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, Exe
             _videosDbContext.Videos.Remove(existVideo);
             await _videosDbContext.SaveChangesAsync();
             
+            _logger.LogInformation("Tag with id: {Id} has been deleted successfully", existVideo.Id);
             return new ExecutionResult(new ErrorInfo($"Video with id: {request.Id} has been deleted successfully."));
         }
         catch (Exception e)
