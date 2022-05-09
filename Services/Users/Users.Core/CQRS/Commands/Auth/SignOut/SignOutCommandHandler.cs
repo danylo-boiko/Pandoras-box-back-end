@@ -18,8 +18,7 @@ public class SignOutCommandHandler : IRequestHandler<SignOutCommand, ExecutionRe
     /// <summary>
     /// Initializes a new instance of the <see cref="SignOutCommandHandler" /> class.
     /// </summary>
-    public SignOutCommandHandler(SignInManager<ScamUser> signInManager,
-        IUserService userService)
+    public SignOutCommandHandler(SignInManager<ScamUser> signInManager, IUserService userService)
     {
         _signInManager = signInManager;
         _userService = userService;

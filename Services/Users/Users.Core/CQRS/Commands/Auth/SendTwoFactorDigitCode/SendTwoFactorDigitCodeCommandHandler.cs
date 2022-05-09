@@ -23,8 +23,9 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
     /// Initializes a new instance of the <see cref="SendTwoFactorDigitCodeCommandHandler" /> class.
     /// </summary>
     /// <param name="dbContext">The database context.</param>
-    public SendTwoFactorDigitCodeCommandHandler(UsersDbContext dbContext,
-        UserManager<ScamUser> userManager,
+    public SendTwoFactorDigitCodeCommandHandler(
+        UsersDbContext dbContext, 
+        UserManager<ScamUser> userManager, 
         IEmailService emailService)
     {
         _dbContext = dbContext;
@@ -38,8 +39,7 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
     /// <param name="request">The request: SendTwoFactorDigitCode</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>string</returns>
-    public async Task<ExecutionResult> Handle(SendTwoFactorDigitCodeCommand request,
-        CancellationToken cancellationToken)
+    public async Task<ExecutionResult> Handle(SendTwoFactorDigitCodeCommand request, CancellationToken cancellationToken)
     {
         var totp = new TwoFactorDigitCodeProvider();
 

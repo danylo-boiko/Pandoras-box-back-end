@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
       <ProjectReference Include="..\Users.Core\Users.Core.csproj" />
     </ItemGroup>
 

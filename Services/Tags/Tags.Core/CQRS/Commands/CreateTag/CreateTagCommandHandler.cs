@@ -51,11 +51,6 @@ public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, Executi
         }
         catch (RpcException e)
         {
-            if (e.StatusCode == StatusCode.NotFound)
-            {
-                _logger.LogError("gRPC server error: {Message}", e.Status.Detail);
-            }
-            
             return new ExecutionResult<Tag>(new ErrorInfo("gRPC server error.",e.Status.Detail));
         }
         catch (Exception e)

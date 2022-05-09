@@ -22,8 +22,7 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResu
     /// </summary>
     /// <param name="dbContext">The database context.</param>
     /// <param name="signInManager"></param>
-    public SignInCommandHandler(UsersDbContext dbContext, 
-        SignInManager<ScamUser> signInManager)
+    public SignInCommandHandler(UsersDbContext dbContext, SignInManager<ScamUser> signInManager)
     {
         _dbContext = dbContext;
         _signInManager = signInManager;
