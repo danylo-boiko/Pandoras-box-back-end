@@ -1,4 +1,4 @@
-﻿using Users.Core.Database;
+﻿using Microsoft.Extensions.Logging;
 using Users.Core.Enums;
 using Users.Core.Services.User;
 
@@ -16,14 +16,16 @@ using Microsoft.Extensions.Options;
 
 public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, ExecutionResult>
 {
+    private readonly ILogger<SetAvatarCommandHandler> _logger;
     private readonly IOptions<StorageServiceOptions> _storageServiceOptions;
     private readonly IUserService _userService;
-    private readonly UsersDbContext _dbContext;
 
     public SetAvatarCommandHandler(
+        ILogger<SetAvatarCommandHandler> logger,
         IOptions<StorageServiceOptions> storageServiceOptions,
         IUserService userService)
     {
+        _logger = logger;
         _storageServiceOptions = storageServiceOptions;
         _userService = userService;
     }
@@ -55,9 +57,12 @@ public class SetAvatarCommandHandler : IRequestHandler<SetAvatarCommand, Executi
 
             var response = call.ResponseAsync.Result;
 
-            return response.IsSuccess
-                ? new ExecutionResult(new InfoMessage("Avatar has been set successfully."))
-                : new ExecutionResult(new ErrorInfo(response.Message));
+            if (response.IsSuccess)
+            {
+                _logger.LogInformation("Avatar for user with id: {Id} has been set successfully", userId);
+                return new ExecutionResult(new InfoMessage($"Avatar for user with id: {userId}  has been set successfully."));
+            }
+            return new ExecutionResult(new ErrorInfo(response.Message));
         }
         catch (Exception e)
         {

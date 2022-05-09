@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Users.Core.Database;
 using Users.Core.Database.Entities.Identity;
 using Users.Core.Models.Auth;
@@ -14,6 +15,7 @@ namespace Users.Core.CQRS.Commands.Auth.SignIn;
 /// <seealso cref="IRequestHandler{SignInCommand}" />
 public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResult<SignedInUserDto>>
 {
+    private readonly ILogger<SignInCommandHandler> _logger;
     private readonly UsersDbContext _dbContext;
     private readonly SignInManager<ScamUser> _signInManager;
 
@@ -22,8 +24,9 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResu
     /// </summary>
     /// <param name="dbContext">The database context.</param>
     /// <param name="signInManager"></param>
-    public SignInCommandHandler(UsersDbContext dbContext, SignInManager<ScamUser> signInManager)
+    public SignInCommandHandler(ILogger<SignInCommandHandler> logger,UsersDbContext dbContext, SignInManager<ScamUser> signInManager)
     {
+        _logger = logger;
         _dbContext = dbContext;
         _signInManager = signInManager;
     }
@@ -46,14 +49,16 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResu
 
             if (user is null)
             {
-                return new ExecutionResult<SignedInUserDto>(new ErrorInfo("Invalid username/password."));
+                _logger.LogError("Provided invalid email({Email})", request.Email);
+                return new ExecutionResult<SignedInUserDto>(new ErrorInfo("Invalid email."));
             }
         
             var signInResult = await _signInManager.PasswordSignInAsync(user, request.Password, true, false);
 
             if (!signInResult.Succeeded)
             {
-                return new ExecutionResult<SignedInUserDto>(new ErrorInfo("Invalid username/password."));
+                _logger.LogError("Provided invalid password for {Email}", request.Email);
+                return new ExecutionResult<SignedInUserDto>(new ErrorInfo("Invalid password."));
             }
 
             var signedInUserDto = new SignedInUserDto
@@ -66,7 +71,8 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, ExecutionResu
                     .ToList(),
                 DisplayName = user.DisplayName
             };
-
+            
+            _logger.LogInformation("{Email} has been successfully signed in", request.Email);
             return new ExecutionResult<SignedInUserDto>(signedInUserDto);
         }
         catch (Exception e)

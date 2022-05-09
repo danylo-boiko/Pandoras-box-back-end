@@ -13,8 +13,7 @@ public class GetProfileInfoQueryHandler : IRequestHandler<GetProfileInfoQuery, E
         _userService = userService;
     }
 
-    public async Task<ExecutionResult<GetProfileInfoQueryResult>> Handle(GetProfileInfoQuery request,
-        CancellationToken cancellationToken)
+    public async Task<ExecutionResult<GetProfileInfoQueryResult>> Handle(GetProfileInfoQuery request, CancellationToken cancellationToken)
     {
         try
         {

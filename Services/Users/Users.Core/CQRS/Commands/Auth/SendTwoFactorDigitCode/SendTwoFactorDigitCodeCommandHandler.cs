@@ -1,6 +1,7 @@
 ﻿using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Users.Core.Consts;
 using Users.Core.Database;
 using Users.Core.Database.Entities.Identity;
@@ -15,6 +16,7 @@ namespace Users.Core.CQRS.Commands.Auth.SendTwoFactorDigitCode;
 /// <seealso cref="IRequestHandler{SendTwoFactorDigitCode}" />
 public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFactorDigitCodeCommand, ExecutionResult>
 {
+    private readonly ILogger<SendTwoFactorDigitCodeCommandHandler> _logger;
     private readonly UsersDbContext _dbContext;
     private readonly UserManager<ScamUser> _userManager;
     private readonly IEmailService _emailService;
@@ -24,10 +26,12 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
     /// </summary>
     /// <param name="dbContext">The database context.</param>
     public SendTwoFactorDigitCodeCommandHandler(
+        ILogger<SendTwoFactorDigitCodeCommandHandler> logger,
         UsersDbContext dbContext, 
         UserManager<ScamUser> userManager, 
         IEmailService emailService)
     {
+        _logger = logger;
         _dbContext = dbContext;
         _userManager = userManager;
         _emailService = emailService;
@@ -54,6 +58,7 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
 
             if (await _userManager.FindByEmailAsync(newUser.Email) is not null)
             {
+                _logger.LogError("User with email: {Email} is not exist", request.Email);
                 return new ExecutionResult(new ErrorInfo("Access denied."));
             }
 
@@ -74,6 +79,7 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
 
             if (code is null)
             {
+                _logger.LogError("Could not generate two factor digit code for {Email}", request.Email);
                 return new ExecutionResult(new ErrorInfo("Could not generate two factor digit code."));
             }
 
@@ -91,6 +97,7 @@ public class SendTwoFactorDigitCodeCommandHandler : IRequestHandler<SendTwoFacto
 
             await transaction.CommitAsync(cancellationToken);
 
+            _logger.LogInformation("Confirmation code for {Email} has been sent successfully", request.Email);
             return new ExecutionResult(new InfoMessage("Confirmation code has been sent successfully."));
         }
         catch (Exception e)

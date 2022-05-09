@@ -3,30 +3,22 @@ using LS.Helpers.Hosting.API;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Users.Core.Configurations;
-using Users.Core.Database;
 using Users.Core.Services.User;
 
 namespace Users.Core.CQRS.Queries.GetProfileAvatar;
 
-public class
-    GetProfileAvatarQueryHandler : IRequestHandler<GetProfileAvatarQuery, ExecutionResult<GetProfileAvatarQueryResult>>
+public class GetProfileAvatarQueryHandler : IRequestHandler<GetProfileAvatarQuery, ExecutionResult<GetProfileAvatarQueryResult>> 
 {
-    private readonly UsersDbContext _dbContext;
     private readonly IUserService _userService;
     private readonly IOptions<StorageServiceOptions> _storageServiceOptions;
 
-    public GetProfileAvatarQueryHandler(
-        UsersDbContext dbContext,
-        IUserService userService,
-        IOptions<StorageServiceOptions> storageServiceOptions)
+    public GetProfileAvatarQueryHandler(IUserService userService, IOptions<StorageServiceOptions> storageServiceOptions)
     {
-        _dbContext = dbContext;
         _userService = userService;
         _storageServiceOptions = storageServiceOptions;
     }
 
-    public async Task<ExecutionResult<GetProfileAvatarQueryResult>> Handle(GetProfileAvatarQuery request,
-        CancellationToken cancellationToken)
+    public async Task<ExecutionResult<GetProfileAvatarQueryResult>> Handle(GetProfileAvatarQuery request, CancellationToken cancellationToken)
     {
         try
         {
