@@ -17,13 +17,10 @@ namespace Storage.Grpc.Extensions
     {
         public static IServiceCollection AddDataAccess(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            serviceCollection
-                .AddEntityFrameworkSqlServer()
-                .AddDbContext<StorageDbContext>(o =>
-                {
-                    o.UseSqlServer(configuration.GetConnectionString("MSSQL"),
-                        c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
-                });
+            serviceCollection.AddDbContext<StorageDbContext>(o =>
+            {
+                o.UseSqlServer(configuration.GetConnectionString("MSSQL"), c => c.MigrationsAssembly(typeof(Program).Assembly.FullName));
+            });
 
             return serviceCollection;
         }
