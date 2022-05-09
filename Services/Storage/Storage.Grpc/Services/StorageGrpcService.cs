@@ -14,17 +14,20 @@ namespace Storage.Grpc.Services
 
     public class StorageGrpcService : Storage.StorageBase
     {
-        private readonly StorageDbContext _dbContext;
+        private readonly ILogger<StorageGrpcService> _logger;
         private readonly IStorageService _storageService;
         private readonly IStorageItemRepository _storageItemRepository;
         private readonly IUserStorageItemRepository _userStorageItemRepository;
+        private readonly StorageDbContext _dbContext;
 
         public StorageGrpcService(
+            ILogger<StorageGrpcService> logger,
             IStorageService storageService,
             IStorageItemRepository storageItemRepository,
             IUserStorageItemRepository userStorageItemRepository,
             StorageDbContext dbContext)
         {
+            _logger = logger ?? throw new ArgumentException(nameof(logger));
             _storageService = storageService ?? throw new ArgumentException(nameof(storageService));
             _storageItemRepository = storageItemRepository ?? throw new ArgumentException(nameof(storageItemRepository));
             _userStorageItemRepository = userStorageItemRepository ?? throw new ArgumentException(nameof(userStorageItemRepository));
@@ -62,12 +65,14 @@ namespace Storage.Grpc.Services
                     
                     await _userStorageItemRepository.Add(userStorageItem);
                     await transaction.CommitAsync();
+                    _logger.LogInformation("{File} has been successfully uploaded", storageItem.Location);
                 }
                 catch (Exception e)
                 {
                     await transaction.RollbackAsync();
                     File.Delete(currentFilePath);
                     uploadedFiles.Remove(currentFilePath);
+                    _logger.LogError(e, "{File} has not been uploaded", currentFilePath);
                     faultyFilesNumbers.Add(fileCounter);
                 }
             }

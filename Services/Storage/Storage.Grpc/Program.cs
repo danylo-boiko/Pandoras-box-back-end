@@ -1,8 +1,12 @@
 using Calzolari.Grpc.AspNetCore.Validation;
+using Common.Logging;
+using Serilog;
 using Storage.Grpc.Extensions;
 using Storage.Grpc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services
     .AddDataAccess(builder.Configuration)

@@ -21,7 +21,7 @@ public static class SeriLogger
             .WriteTo.Console()
             .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
             {
-                IndexFormat = $"applogs-{applicationName}-{environmentName}-{DateTime.UtcNow:yyyy-MM}",
+                IndexFormat = $"pandoras-box-log-{applicationName}-{environmentName}-{DateTime.UtcNow:yyyy-MM}",
                 AutoRegisterTemplate = true,
                 NumberOfShards = 2,
                 NumberOfReplicas = 1
