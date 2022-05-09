@@ -1,7 +1,11 @@
+using Common.Logging;
+using Serilog;
 using Tags.Core.Extensions;
 using Tags.Grpc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services
     .AddDataAccess(builder.Configuration)

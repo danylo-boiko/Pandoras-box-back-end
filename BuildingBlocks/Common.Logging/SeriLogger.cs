@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 
 namespace Common.Logging;
@@ -17,6 +18,7 @@ public static class SeriLogger
         configuration
             .Enrich.FromLogContext()
             .Enrich.WithMachineName()
+            .Enrich.WithExceptionDetails()
             .WriteTo.Debug()
             .WriteTo.Console()
             .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
