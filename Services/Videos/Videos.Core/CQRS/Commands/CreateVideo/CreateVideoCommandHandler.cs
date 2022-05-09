@@ -36,6 +36,7 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
     {
         try
         {
+            int videoId = 0;
             await _usersGrpcService.GetUserAsync(request.AuthorId);
 
             foreach (var tagId in request.TagsIds)
@@ -50,6 +51,7 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
             if (saveVideoResponse.IsSuccess)
             {
                 await using var transaction = await _videosDbContext.Database.BeginTransactionAsync();
+                
                 try
                 {
                     var video = new Video
@@ -62,7 +64,8 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
 
                     _videosDbContext.Videos.Add(video);
                     await _videosDbContext.SaveChangesAsync();
-
+                    videoId = video.Id;
+                    
                     foreach (var tagId in request.TagsIds)
                     {
                         var videoTag = new VideoTag
@@ -85,8 +88,8 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
 
             if (saveVideoResponse.IsSuccess)
             {
-                _logger.LogInformation("Video has been uploaded successfully");
-                return new ExecutionResult<Video>(new InfoMessage("Video has been uploaded successfully."));
+                _logger.LogInformation("Video has been uploaded successfully, id {Id}", videoId);
+                return new ExecutionResult<Video>(new InfoMessage($"Video has been uploaded successfully, id {videoId}."));
             }
 
             return new ExecutionResult<Video>(new ErrorInfo(saveVideoResponse.Message));
