@@ -26,10 +26,14 @@ def nsfw_video_detection_consumer(channel, method, properties, body):
 
     _, nsfw_probabilities = n2.predict_video_frames(detection_event.videoLocation, frame_interval=24)
     classification = get_video_classification(nsfw_probabilities)
-    channel.basic_ack(delivery_tag=method.delivery_tag)
-    
-    status_update_event = VideoClassificationStatusUpdateEvent(detection_event.videoId, detection_event.authorId, classification)
-    response = create_masstransit_response(status_update_event, request, EventBusExchanger.VIDEO_CLASSIFICATION_STATUS_UPDATING)
+
+    status_update_event = VideoClassificationStatusUpdateEvent(detection_event.videoId,
+                                                               detection_event.authorId,
+                                                               classification)
+
+    response = create_masstransit_response(status_update_event,
+                                           request,
+                                           EventBusExchanger.VIDEO_CLASSIFICATION_STATUS_UPDATING)
 
     channel.basic_publish(exchange=EventBusExchanger.VIDEO_CLASSIFICATION_STATUS_UPDATING,
                           routing_key=EventBusQueue.VIDEO_CLASSIFICATION_STATUS_UPDATING,
