@@ -26,7 +26,6 @@ builder.Services
     .AddStorageGrpc(builder.Configuration)
     .AddUsersGrpc(builder.Configuration)
     .AddTagsGrpc(builder.Configuration)
-    .AddNsfwGrpc(builder.Configuration)
     .AddHealthCheck();
 
 var app = builder.Build();

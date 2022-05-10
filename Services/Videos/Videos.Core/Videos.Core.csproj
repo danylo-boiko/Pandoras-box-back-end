@@ -25,10 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\..\NSFW\NSFW.Grpc\protos\nsfw.proto">
-            <Link>Protos\nswf.proto</Link>
-            <Generator>MSBuild:Compile</Generator>
-        </Protobuf>
         <Protobuf Include="..\..\Storage\Storage.Grpc\protos\storage.proto">
             <Link>Protos\storage.proto</Link>
             <Generator>MSBuild:Compile</Generator>
