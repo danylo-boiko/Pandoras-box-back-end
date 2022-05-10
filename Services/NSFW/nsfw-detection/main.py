@@ -19,6 +19,8 @@ def setup_channel_queues(channel):
     channel.queue_bind(queue=EventBusQueue.NSFW_VIDEOS_DETECTION, exchange=EventBusExchanger.NSFW_VIDEOS_DETECTION)
     channel.basic_consume(queue=EventBusQueue.NSFW_VIDEOS_DETECTION, on_message_callback=nsfw_video_detection_consumer)
 
+    channel.queue_declare(queue=EventBusQueue.VIDEO_CLASSIFICATION_STATUS_UPDATING, durable=True)
+
 
 def main():
     config = ConfigParser()

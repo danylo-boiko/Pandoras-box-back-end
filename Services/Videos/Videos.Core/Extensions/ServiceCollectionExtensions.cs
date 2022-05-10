@@ -1,10 +1,13 @@
 ﻿using System.Reflection;
+using EventBus.Messages.Consts;
+using EventBus.Messages.Events;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tags.Grpc.Protos;
 using Users.Grpc.Protos;
+using Videos.Core.EventBusConsumers;
 using Videos.Core.GrpcServices;
 
 namespace Videos.Core.Extensions;
@@ -56,9 +59,18 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddRabbitMQ(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddMassTransit(config => {
-            config.UsingRabbitMq((ctx, cfg) => {
+        serviceCollection.AddMassTransit(config => 
+        {
+            config.AddConsumer<VideoClassificationStatusUpdateConsumer>();
+            
+            config.UsingRabbitMq((ctx, cfg) => 
+            {
                 cfg.Host(configuration["EventBusSettings:HostAddress"]);
+                
+                cfg.ReceiveEndpoint(EventBusConstants.VideoClassificationStatusUpdatingQueue, c =>
+                {
+                    c.ConfigureConsumer<VideoClassificationStatusUpdateConsumer>(ctx);
+                });
             });
         });
 

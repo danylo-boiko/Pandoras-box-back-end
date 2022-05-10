@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class ClassificationStatus(Enum):
+class ClassificationStatus(IntEnum):
     UnReviewed = 0
     Safe = 1
     ProbablySafe = 2
