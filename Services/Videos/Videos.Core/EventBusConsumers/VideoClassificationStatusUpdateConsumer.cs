@@ -12,7 +12,6 @@ public class VideoClassificationStatusUpdateConsumer : IConsumer<VideoClassifica
     private readonly ILogger<VideoClassificationStatusUpdateConsumer> _logger;
     private readonly VideosDbContext _videosDbContext;
 
-
     public VideoClassificationStatusUpdateConsumer(
         ILogger<VideoClassificationStatusUpdateConsumer> logger,
         VideosDbContext videosDbContext)
