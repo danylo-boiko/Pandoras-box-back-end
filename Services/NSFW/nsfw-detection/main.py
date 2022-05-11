@@ -1,6 +1,8 @@
 import os
 import sys
 import pika
+import logging
+import logger
 from configparser import ConfigParser
 from enums.event_bus_queue import EventBusQueue
 from enums.event_bus_exchanger import EventBusExchanger
@@ -29,13 +31,15 @@ def setup_channel_queues(channel):
 
 
 def main():
+    logger.setup_logger()
+
     config = ConfigParser()
     config.read('config.ini')
 
     channel = create_rabbitmq_channel(config)
     setup_channel_queues(channel)
 
-    print(' [*] Waiting for messages. To exit press CTRL+C.')
+    logging.info(' [*] Waiting for messages. To exit press CTRL+C.')
     channel.start_consuming()
 
 
@@ -43,7 +47,7 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        print('Interrupted')
+        logging.info('Interrupted')
         try:
             sys.exit(0)
         except SystemExit:

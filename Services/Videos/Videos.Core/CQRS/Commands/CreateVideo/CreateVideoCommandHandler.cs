@@ -27,8 +27,7 @@ public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, Exe
         StorageGrpcService storageGrpcService,
         UsersGrpcService usersGrpcService,
         TagsGrpcService tagsGrpcService,
-        VideosDbContext videosDbContext
-    )
+        VideosDbContext videosDbContext)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
