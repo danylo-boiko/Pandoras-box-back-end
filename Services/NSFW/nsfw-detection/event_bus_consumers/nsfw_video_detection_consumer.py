@@ -1,5 +1,8 @@
 import pika
 import json
+import time
+import logging
+import os
 import opennsfw2 as n2
 from enums.event_bus_exchanger import EventBusExchanger
 from enums.event_bus_queue import EventBusQueue
@@ -23,16 +26,22 @@ def get_video_classification(nsfw_probabilities):
 def nsfw_video_detection_consumer(channel, method, properties, body):
     request = json.loads(body.decode('UTF-8'))
     detection_event = NsfwVideoDetectionEvent(**request["message"])
+    file_size = os.path.getsize(detection_event.videoLocation)
 
+    detection_start_time = time.time()
     _, nsfw_probabilities = n2.predict_video_frames(detection_event.videoLocation, frame_interval=24)
+    elapsed_time = round(time.time() - detection_start_time, 2)
+
+    logging.info(f'NSFW detection elapsed time:{elapsed_time} seconds. File size:{file_size} bytes.')
+
     classification = get_video_classification(nsfw_probabilities)
 
-    status_update_event = VideoClassificationStatusUpdateEvent(detection_event.videoId,
-                                                               detection_event.authorId,
+    logging.info(f'Classification status for video with id: {detection_event.videoId} is {classification.name}.')
+
+    status_update_event = VideoClassificationStatusUpdateEvent(detection_event.videoId, detection_event.authorId,
                                                                classification)
 
-    response = create_masstransit_response(status_update_event,
-                                           request,
+    response = create_masstransit_response(status_update_event, request,
                                            EventBusExchanger.VIDEO_CLASSIFICATION_STATUS_UPDATING)
 
     channel.basic_publish(exchange=EventBusExchanger.VIDEO_CLASSIFICATION_STATUS_UPDATING,
