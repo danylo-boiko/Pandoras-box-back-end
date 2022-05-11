@@ -36,8 +36,6 @@ def nsfw_video_detection_consumer(channel, method, properties, body):
 
     classification = get_video_classification(nsfw_probabilities)
 
-    logging.info(f'Classification status for video with id: {detection_event.videoId} is {classification.name}.')
-
     status_update_event = VideoClassificationStatusUpdateEvent(detection_event.videoId, detection_event.authorId,
                                                                classification)
 
